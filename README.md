@@ -4,7 +4,7 @@
 | Name             | Number    | E-Mail             |
 | ---------------- | --------- | ------------------ |
 | Gonçalo Pinto         | 202108693 | up202108693@up.pt                |
-| Rui Carvalho         | 202108807 | up202108807@up.pt                |
+| Rui Carvalho          | 202108807 | up202108807@up.pt                |
 
 ----
 
