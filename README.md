@@ -1,10 +1,10 @@
 # CG 2023/2024
 
-## Group T0xG0y
+## Group T05G05
 | Name             | Number    | E-Mail             |
 | ---------------- | --------- | ------------------ |
-| John Doe         | 201901010 | ...                |
-| Jane Doe         | 201901011 | ...                |
+| Gonçalo Pinto         | 202108693 | up202108693@up.pt                |
+| Rui Carvalho         | 202108807 | up202108807@up.pt                |
 
 ----
 
