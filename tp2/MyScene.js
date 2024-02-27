@@ -119,18 +119,17 @@ export class MyScene extends CGFscene {
       this.rotate(-135*Math.PI/180,0,0,1);
       this.triangleBig.display();
       this.popMatrix();
+    }
 
+    // Draw big triangle
+    if (this.displayTriangleBig) {
       this.pushMatrix();
       this.translate(-2, 0, 0);
       this.rotate(180*Math.PI/180,0,0,1);
       this.triangleBig.display();
       this.popMatrix();
     }
-    // Draw diamond
-    if (this.displayDiamond) {
-      this.multMatrix(transposedMatrix);  // same as this.translate(0.5,0.5,0);
-      this.diamond.display();
-    }
+
     // Draw small triangle 
     if (this.displayTriangleSmall) {
       this.pushMatrix();
@@ -140,7 +139,10 @@ export class MyScene extends CGFscene {
       this.rotate(Math.PI/2,0,0,1);
       this.triangleSmall.display();
       this.popMatrix();
-      
+    }
+
+    // Draw small triangle 
+    if (this.displayTriangleSmall) {
       this.pushMatrix();
       var xi_mov = (Math.sqrt(2)+1) / 2;      // just to make it more readable (triangle height + slight difference)
       var yi_mov = 3 + 1/2 - Math.sqrt(2)/2;
@@ -149,6 +151,17 @@ export class MyScene extends CGFscene {
       this.triangleSmall.display();
       this.popMatrix();
     }
+    
+    // Draw parallelogram
+    if (this.displayParallelogram) {
+      this.pushMatrix();
+      this.translate(-0.5,0.5,0);
+      this.rotate(-Math.PI/2,0,0,1);  // colocar na vertical
+      this.rotate(Math.PI,0,1,0);     // inverter
+      this.parallelogram.display();
+      this.popMatrix();
+    }
+
     // Draw triangle
     if (this.displayTriangle) {
       this.pushMatrix();
@@ -157,16 +170,13 @@ export class MyScene extends CGFscene {
       this.triangle.display();
       this.popMatrix();
     }
-    
-    
-    // Draw parallelogram
-    if (this.displayParallelogram) {
-      this.pushMatrix();
-      this.rotate(2*Math.PI,-1,0,0);
-      this.parallelogram.display();
-      this.popMatrix();
-    }
 
+    // Draw diamond
+    if (this.displayDiamond) {
+      this.multMatrix(transposedMatrix);  // same as this.translate(0.5,0.5,0);
+      this.diamond.display();
+    }
+    
     // ---- END Primitive drawing section
   }
 }
