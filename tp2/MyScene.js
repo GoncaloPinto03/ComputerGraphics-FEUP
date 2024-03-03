@@ -1,9 +1,5 @@
 import { CGFscene, CGFcamera, CGFaxis } from "../lib/CGF.js";
-import { MyDiamond } from "./MyDiamond.js";
-import { MyTriangle } from "./MyTriangle.js";
-import { MyParallelogram } from "./MyParallelogram.js";
-import { MyTriangleSmall } from "./MyTriangleSmall.js";
-import { MyTriangleBig } from "./MyTriangleBig.js";
+import { MyTangram } from "./MyTangram.js";
 
 /**
  * MyScene
@@ -29,19 +25,21 @@ export class MyScene extends CGFscene {
 
     //Initialize scene objects
     this.axis = new CGFaxis(this);
-    this.diamond = new MyDiamond(this);
-    this.triangle = new MyTriangle(this);
-    this.parallelogram = new MyParallelogram(this);
-    this.triangleSmall = new MyTriangleSmall(this);
-    this.triangleBig = new MyTriangleBig(this);
+    this.tangram = MyTangram(this);
+    // this.diamond = new MyDiamond(this);
+    // this.triangle = new MyTriangle(this);
+    // this.parallelogram = new MyParallelogram(this);
+    // this.triangleSmall = new MyTriangleSmall(this);
+    // this.triangleBig = new MyTriangleBig(this);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
-    this.displayDiamond = true;
-    this.displayTriangle = true;
-    this.displayParallelogram = true;
-    this.displayTriangleSmall = true;
-    this.displayTriangleBig = true;
+    this.displayTangram = true;
+    // this.displayDiamond = true;
+    // this.displayTriangle = true;
+    // this.displayParallelogram = true;
+    // this.displayTriangleSmall = true;
+    // this.displayTriangleBig = true;
     this.scaleFactor = 1;
   }
   initLights() {
@@ -78,9 +76,9 @@ export class MyScene extends CGFscene {
 
     // Draw axis
     if (this.displayAxis) this.axis.display();
-
+    
     this.setDefaultAppearance();
-
+        
     var sca = [
       this.scaleFactor,
       0.0,
@@ -102,81 +100,83 @@ export class MyScene extends CGFscene {
     
     this.multMatrix(sca);
 
-    var transposedMatrix = [
-      this.scaleFactor, 0, 0, 0,
-      0, this.scaleFactor, 0, 0,
-      0, 0, this.scaleFactor, 0,
-      0.5, 0.5, 0, this.scaleFactor
-    ]
+    // var transposedMatrix = [
+    //   this.scaleFactor, 0, 0, 0,
+    //   0, this.scaleFactor, 0, 0,
+    //   0, 0, this.scaleFactor, 0,
+    //   0.5, 0.5, 0, this.scaleFactor
+    // ]
 
-    // ---- BEGIN Primitive drawing section
+    // // ---- BEGIN Primitive drawing section
 
-    // Draw big triangle
-    // NOTE: first we rotate and then translate, but in code we do the reverse reasoning
-    if (this.displayTriangleBig) {
-      this.pushMatrix();
-      this.translate(-Math.sqrt(2), -Math.sqrt(2), 0);
-      this.rotate(-135*Math.PI/180,0,0,1);
-      this.triangleBig.display();
-      this.popMatrix();
-    }
-
-    // Draw big triangle
-    if (this.displayTriangleBig) {
-      this.pushMatrix();
-      this.translate(-2, 0, 0);
-      this.rotate(180*Math.PI/180,0,0,1);
-      this.triangleBig.display();
-      this.popMatrix();
-    }
-
-    // Draw small triangle 
-    if (this.displayTriangleSmall) {
-      this.pushMatrix();
-      var x_mov = 1 + 0.5;      // just to make it more readable (triangle height + slight difference)
-      var y_mov = -0.5;
-      this.translate(x_mov,y_mov,0);
-      this.rotate(Math.PI/2,0,0,1);
-      this.triangleSmall.display();
-      this.popMatrix();
-    }
-
-    // Draw small triangle 
-    if (this.displayTriangleSmall) {
-      this.pushMatrix();
-      var xi_mov = (Math.sqrt(2)+1) / 2;      // just to make it more readable (triangle height + slight difference)
-      var yi_mov = 3 + 1/2 - Math.sqrt(2)/2;
-      this.translate(xi_mov,yi_mov,0);
-      this.rotate(3*Math.PI/4,0,0,1);
-      this.triangleSmall.display();
-      this.popMatrix();
-    }
+    // // Draw big triangle
+    // // NOTE: first we rotate and then translate, but in code we do the reverse reasoning
+    if (this.displayTangram) this.tangram.display();
     
-    // Draw parallelogram
-    if (this.displayParallelogram) {
-      this.pushMatrix();
-      this.translate(-0.5,0.5,0);
-      this.rotate(-Math.PI/2,0,0,1);  // colocar na vertical
-      this.rotate(Math.PI,0,1,0);     // inverter
-      this.parallelogram.display();
-      this.popMatrix();
-    }
+    // if (this.displayTriangleBig) {
+    //   this.pushMatrix();
+    //   this.translate(-Math.sqrt(2), -Math.sqrt(2), 0);
+    //   this.rotate(-135*Math.PI/180,0,0,1);
+    //   this.triangleBig.display();
+    //   this.popMatrix();
+    // }
 
-    // Draw triangle
-    if (this.displayTriangle) {
-      this.pushMatrix();
-      this.translate(0,-Math.sqrt(2),0);
-      this.rotate(-225*Math.PI/180,0,0,1);
-      this.triangle.display();
-      this.popMatrix();
-    }
+    // // Draw big triangle
+    // if (this.displayTriangleBig) {
+    //   this.pushMatrix();
+    //   this.translate(-2, 0, 0);
+    //   this.rotate(180*Math.PI/180,0,0,1);
+    //   this.triangleBig.display();
+    //   this.popMatrix();
+    // }
 
-    // Draw diamond
-    if (this.displayDiamond) {
-      this.multMatrix(transposedMatrix);  // same as this.translate(0.5,0.5,0);
-      this.diamond.display();
-    }
+    // // Draw small triangle 
+    // if (this.displayTriangleSmall) {
+    //   this.pushMatrix();
+    //   var x_mov = 1 + 0.5;      // just to make it more readable (triangle height + slight difference)
+    //   var y_mov = -0.5;
+    //   this.translate(x_mov,y_mov,0);
+    //   this.rotate(Math.PI/2,0,0,1);
+    //   this.triangleSmall.display();
+    //   this.popMatrix();
+    // }
+
+    // // Draw small triangle 
+    // if (this.displayTriangleSmall) {
+    //   this.pushMatrix();
+    //   var xi_mov = (Math.sqrt(2)+1) / 2;      // just to make it more readable (triangle height + slight difference)
+    //   var yi_mov = 3 + 1/2 - Math.sqrt(2)/2;
+    //   this.translate(xi_mov,yi_mov,0);
+    //   this.rotate(3*Math.PI/4,0,0,1);
+    //   this.triangleSmall.display();
+    //   this.popMatrix();
+    // }
     
-    // ---- END Primitive drawing section
+    // // Draw parallelogram
+    // if (this.displayParallelogram) {
+    //   this.pushMatrix();
+    //   this.translate(-0.5,0.5,0);
+    //   this.rotate(-Math.PI/2,0,0,1);  // colocar na vertical
+    //   this.rotate(Math.PI,0,1,0);     // inverter
+    //   this.parallelogram.display();
+    //   this.popMatrix();
+    // }
+
+    // // Draw triangle
+    // if (this.displayTriangle) {
+    //   this.pushMatrix();
+    //   this.translate(0,-Math.sqrt(2),0);
+    //   this.rotate(-225*Math.PI/180,0,0,1);
+    //   this.triangle.display();
+    //   this.popMatrix();
+    // }
+
+    // // Draw diamond
+    // if (this.displayDiamond) {
+    //   this.multMatrix(transposedMatrix);  // same as this.translate(0.5,0.5,0);
+    //   this.diamond.display();
+    // }
+    
+    // // ---- END Primitive drawing section
   }
 }
