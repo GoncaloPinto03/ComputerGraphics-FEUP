@@ -26,20 +26,10 @@ export class MyScene extends CGFscene {
     //Initialize scene objects
     this.axis = new CGFaxis(this);
     this.tangram = new MyTangram(this);
-    // this.diamond = new MyDiamond(this);
-    // this.triangle = new MyTriangle(this);
-    // this.parallelogram = new MyParallelogram(this);
-    // this.triangleSmall = new MyTriangleSmall(this);
-    // this.triangleBig = new MyTriangleBig(this);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
     this.displayTangram = true;
-    // this.displayDiamond = true;
-    // this.displayTriangle = true;
-    // this.displayParallelogram = true;
-    // this.displayTriangleSmall = true;
-    // this.displayTriangleBig = true;
     this.scaleFactor = 1;
   }
   initLights() {
