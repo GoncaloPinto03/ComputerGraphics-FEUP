@@ -1,4 +1,4 @@
-import { CGFobject } from "../lib/CGF.js";
+import { CGFobject, CGFappearance } from "../lib/CGF.js";
 import { MyDiamond } from "./MyDiamond.js";
 import { MyParallelogram } from "./MyParallelogram.js";
 import { MyTriangle } from "./MyTriangle.js";
@@ -18,6 +18,59 @@ export class MyTangram extends CGFobject {
         this.triangleBig = new MyTriangleBig(this.scene);
         this.parallelogram = new MyParallelogram(this.scene);
         this.scaleFactor = 1;
+        this.initMaterials();
+    }
+
+    initMaterials() {
+
+        // this.diamond
+        this.diamondMaterial = new CGFappearance(this.scene);
+        this.diamondMaterial.setAmbient(0, 1, 0, 1.0);
+        this.diamondMaterial.setDiffuse(0, 1, 0, 0)
+        this.diamondMaterial.setSpecular(0.9, 0.9, 0.9, 1.0);
+        this.diamondMaterial.setShininess(10.0);
+
+        // big this.triangle blue
+        this.triangleBlueBigMaterial = new CGFappearance(this.scene);
+        this.triangleBlueBigMaterial.setAmbient(60/255, 150/255, 255/255, 1.0);
+        this.triangleBlueBigMaterial.setDiffuse(76 / 255, 0 / 255, 153 / 255, 0)
+        this.triangleBlueBigMaterial.setSpecular(0.9, 0.9, 0.9, 1.0);
+        this.triangleBlueBigMaterial.setShininess(10.0);
+
+        // big this.triangle orange
+        this.triangleOrangeBigMaterial = new CGFappearance(this.scene);
+        this.triangleOrangeBigMaterial.setAmbient(255/255, 153/255, 51/255, 1.0);
+        this.triangleOrangeBigMaterial.setDiffuse(255 / 255, 153 / 255, 204 / 255, 0);
+        this.triangleOrangeBigMaterial.setSpecular(0.9, 0.9, 0.9, 1.0);
+        this.triangleOrangeBigMaterial.setShininess(10.0);
+
+        // small this.triangle red
+        this.triangleRedSmallMaterial = new CGFappearance(this.scene);
+        this.triangleRedSmallMaterial.setAmbient(255/255, 0, 0, 1.0);
+        this.triangleRedSmallMaterial.setDiffuse(255 / 255, 128 / 255, 0 / 255, 0)
+        this.triangleRedSmallMaterial.setSpecular(0.9, 0.9, 0.9, 1.0);
+        this.triangleRedSmallMaterial.setShininess(10.0);
+
+        // small this.triangle purple
+        this.trianglePurpleSmallMaterial = new CGFappearance(this.scene);
+        this.trianglePurpleSmallMaterial.setAmbient(255/255, 0, 255/255, 1.0);
+        this.trianglePurpleSmallMaterial.setDiffuse(0, 0, 1, 0)
+        this.trianglePurpleSmallMaterial.setSpecular(0.9, 0.9, 0.9, 1.0);
+        this.trianglePurpleSmallMaterial.setShininess(10.0);
+
+        // this.parallelogram 
+        this.parallelogramMaterial = new CGFappearance(this.scene);
+        this.parallelogramMaterial.setAmbient(255/255, 255/255, 0, 1.0);
+        this.parallelogramMaterial.setDiffuse(1, 0, 0, 0);
+        this.parallelogramMaterial.setSpecular(0.9, 0.9, 0.9, 1.0);
+        this.parallelogramMaterial.setShininess(10.0);        
+
+        // this.triangle pink
+        this.trianglePinkMaterial = new CGFappearance(this.scene);
+        this.trianglePinkMaterial.setAmbient(255/255, 153/255, 255/255, 1.0);
+        this.trianglePinkMaterial.setDiffuse(1, 1, 0, 0);
+        this.trianglePinkMaterial.setSpecular(0.9, 0.9, 0.9, 1.0);
+        this.trianglePinkMaterial.setShininess(10.0);
     }
     
     display() {
@@ -31,6 +84,8 @@ export class MyTangram extends CGFobject {
 
         // Draw diamond
         this.scene.multMatrix(transposedMatrix);  // same as this.translate(0.5,0.5,0);
+        // this.diamondMaterial.apply();
+        this.scene.customMaterial.apply();
         this.diamond.display();
         this.scene.popMatrix();
 
@@ -39,6 +94,7 @@ export class MyTangram extends CGFobject {
         this.scene.pushMatrix();
         this.scene.translate(-Math.sqrt(2), -Math.sqrt(2), 0);
         this.scene.rotate(-135*Math.PI/180,0,0,1);
+        this.triangleBlueBigMaterial.apply();
         this.triangleBig.display();
         this.scene.popMatrix();
 
@@ -46,6 +102,7 @@ export class MyTangram extends CGFobject {
         this.scene.pushMatrix();
         this.scene.translate(-2, 0, 0);
         this.scene.rotate(180*Math.PI/180,0,0,1);
+        this.triangleOrangeBigMaterial.apply();
         this.triangleBig.display();
         this.scene.popMatrix();
 
@@ -55,6 +112,7 @@ export class MyTangram extends CGFobject {
         var y_mov = -0.5;
         this.scene.translate(x_mov,y_mov,0);
         this.scene.rotate(Math.PI/2,0,0,1);
+        this.triangleRedSmallMaterial.apply();
         this.triangleSmall.display();
         this.scene.popMatrix();
 
@@ -63,6 +121,7 @@ export class MyTangram extends CGFobject {
         var xi_mov = (Math.sqrt(2)+1) / 2;      // just to make it more readable (triangle height + slight difference)
         var yi_mov = 3 + 1/2 - Math.sqrt(2)/2;
         this.scene.translate(xi_mov,yi_mov,0);
+        this.trianglePurpleSmallMaterial.apply();
         this.scene.rotate(3*Math.PI/4,0,0,1);
         this.triangleSmall.display();
         this.scene.popMatrix();
@@ -72,6 +131,7 @@ export class MyTangram extends CGFobject {
         this.scene.translate(-0.5,0.5,0);
         this.scene.rotate(-Math.PI/2,0,0,1);  // colocar na vertical
         this.scene.rotate(Math.PI,0,1,0);     // inverter
+        this.parallelogramMaterial.apply();
         this.parallelogram.display();
         this.scene.popMatrix();
         
@@ -79,7 +139,24 @@ export class MyTangram extends CGFobject {
         this.scene.pushMatrix();
         this.scene.translate(0,-Math.sqrt(2),0);
         this.scene.rotate(-225*Math.PI/180,0,0,1);
+        this.trianglePinkMaterial.apply();
         this.triangle.display();
         this.scene.popMatrix();
     }
+
+    enableNormalViz(){
+        this.diamond.enableNormalViz()
+        this.triangle.enableNormalViz()
+        this.triangleBig.enableNormalViz()
+        this.triangleSmall.enableNormalViz()
+        this.parallelogram.enableNormalViz()
+    };
+
+    disableNormalViz(){
+        this.diamond.disableNormalViz()
+        this.triangle.disableNormalViz()
+        this.triangleBig.disableNormalViz()
+        this.triangleSmall.disableNormalViz()
+        this.parallelogram.disableNormalViz()
+    };
 }
