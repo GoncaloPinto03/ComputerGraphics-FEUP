@@ -8,6 +8,7 @@ import { MyTriangle } from "./MyTriangle.js";
 import { MyTriangleBig } from "./MyTriangleBig.js";
 import { MyTangram } from "./MyTangram.js";
 import { MyUnitCube } from "./MyUnitCube.js";
+import { MyPrism } from "./MyPrism.js";
 
 
 /**
@@ -39,11 +40,12 @@ export class MyScene extends CGFscene {
         this.cone = new MyCone(this, 3, 1);
         this.tangram = new MyTangram(this);
         this.unitCube = new MyUnitCube(this);
+        this.prism = new MyPrism(this, 8, 20);
         
-        this.objects = [this.plane, this.pyramid, this.cone, this.tangram, this.unitCube];
+        this.objects = [this.plane, this.pyramid, this.cone, this.tangram, this.unitCube, this.prism];
 
         // Labels and ID's for object selection on MyInterface
-        this.objectIDs = { 'Plane': 0 , 'Pyramid': 1, 'Cone': 2, 'Tangram': 3, 'UnitCube': 4};
+        this.objectIDs = { 'Plane': 0 , 'Pyramid': 1, 'Cone': 2, 'Tangram': 3, 'UnitCube': 4, 'Prism': 5};
 
         //Other variables connected to MyInterface
         this.selectedObject = 3;
@@ -188,7 +190,13 @@ export class MyScene extends CGFscene {
         else
             this.objects[this.selectedObject].disableNormalViz();
         
-        this.objects[this.selectedObject].display();
+        let obj = this.objects[this.selectedObject]
+        if (obj === this.prism) {
+            this.translate(0,1,0);
+            this.rotate(Math.PI/2,1,0,0);
+        }
+        obj.display();
+
         this.popMatrix();
         // ---- END Primitive drawing section
     }
