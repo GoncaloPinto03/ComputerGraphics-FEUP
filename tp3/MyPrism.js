@@ -42,8 +42,8 @@ export class MyPrism extends CGFobject {
                 );
                 
                 this.indices.push(
-                    index, index+1, index+2,
-                    index+1, index+2, index+3
+                    index+2, index, index+1,
+                    index+1, index+3, index+2
                 );
 
                 let x = Math.cos((i+0.5) * angle);
@@ -67,5 +67,7 @@ export class MyPrism extends CGFobject {
 
 		this.initGLBuffers();
 	}
+    updateBuffers(complexity){
+    }
 }
 
