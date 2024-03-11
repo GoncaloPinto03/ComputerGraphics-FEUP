@@ -2,8 +2,19 @@ import { CGFscene, CGFcamera, CGFaxis, CGFappearance } from "../lib/CGF.js";
 import { MyPyramid } from "./MyPyramid.js";
 import { MyCone } from "./MyCone.js";
 import { MyPlane } from "./MyPlane.js";
+<<<<<<< HEAD
 import { MyTangram } from "./MyTangram.js";
 import { MyUnitCube } from "./MyUnitCube.js";
+=======
+import { MyDiamond } from "./MyDiamond.js";
+import { MyParallelogram } from "./MyParallelogram.js";
+import { MyTriangle } from "./MyTriangle.js";
+import { MyTriangleBig } from "./MyTriangleBig.js";
+import { MyTangram } from "./MyTangram.js";
+import { MyUnitCube } from "./MyUnitCube.js";
+import { MyPrism } from "./MyPrism.js";
+import { MyCylinder } from "./MyCylinder.js";
+>>>>>>> master
 
 /**
 * MyScene
@@ -30,6 +41,7 @@ export class MyScene extends CGFscene {
         //Initialize scene objects
         this.axis = new CGFaxis(this);
         this.plane = new MyPlane(this, 5);
+<<<<<<< HEAD
         this.cone = new MyCone(this, 3, 1);
         this.pyramid = new MyPyramid(this, 3, 1);
         this.tangram = new MyTangram(this);
@@ -42,11 +54,31 @@ export class MyScene extends CGFscene {
 
         //Other variables connected to MyInterface
         this.selectedObject = 0;
+=======
+        this.pyramid = new MyPyramid(this, 3, 1);
+        this.cone = new MyCone(this, 3, 1);
+        this.tangram = new MyTangram(this);
+        this.unitCube = new MyUnitCube(this);
+        this.prism = new MyPrism(this, 8, 20);
+        this.cylinder = new MyCylinder(this, 8, 20);
+        
+        this.objects = [this.plane, this.pyramid, this.cone, this.tangram, this.unitCube, this.prism, this.cylinder];
+
+        // Labels and ID's for object selection on MyInterface
+        this.objectIDs = { 'Plane': 0 , 'Pyramid': 1, 'Cone': 2, 'Tangram': 3, 'UnitCube': 4, 'Prism': 5, 'Cylinder': 6 };
+
+        //Other variables connected to MyInterface
+        this.selectedObject = 3;
+>>>>>>> master
         this.selectedMaterial = 0;
         this.displayAxis = true;
         this.displayNormals = false;
         this.objectComplexity = 0.5;
+<<<<<<< HEAD
         this.scaleFactor = 2.0;
+=======
+        this.scaleFactor = 0.8;
+>>>>>>> master
 
     }
     initLights() {
@@ -128,6 +160,16 @@ export class MyScene extends CGFscene {
         this.material3.setSpecular(1, 0, 0, 1.0);
         this.material3.setShininess(10.0);
 
+<<<<<<< HEAD
+=======
+        // Wood Material
+        this.material4 = new CGFappearance(this);
+        this.material4.setAmbient(0.6, 0.4, 0.2, 1.0);
+        this.material4.setDiffuse(0, 0, 0, 1.0);
+        this.material4.setSpecular(0.3, 0, 0, 1.0);
+        this.material4.setShininess(10.0);
+
+>>>>>>> master
         // Custom material (can be changed in the interface)
         // initially midrange values on ambient, diffuse and specular, on R, G and B respectively
 
@@ -141,10 +183,17 @@ export class MyScene extends CGFscene {
 
         this.updateCustomMaterial();
 
+<<<<<<< HEAD
         this.materials = [this.material1, this.material2, this.material3, this.customMaterial];
 
         // Labels and ID's for object selection on MyInterface
         this.materialIDs = {'Red Ambient': 0, 'Red Diffuse': 1, 'Red Specular': 2, 'Custom': 3 };
+=======
+        this.materials = [this.material1, this.material2, this.material3, this.material4, this.customMaterial];
+
+        // Labels and ID's for object selection on MyInterface
+        this.materialIDs = {'Red Ambient': 0, 'Red Diffuse': 1, 'Red Specular': 2, 'Wood': 3, 'Custom': 4 };
+>>>>>>> master
     }
     display() {
         // ---- BEGIN Background, camera and axis setup
@@ -176,7 +225,16 @@ export class MyScene extends CGFscene {
         else
             this.objects[this.selectedObject].disableNormalViz();
         
+<<<<<<< HEAD
         this.objects[this.selectedObject].display();
+=======
+        let obj = this.objects[this.selectedObject]
+        if (obj === this.prism) {
+            this.translate(0,1,0);
+        }
+        obj.display();
+
+>>>>>>> master
         this.popMatrix();
         // ---- END Primitive drawing section
     }
