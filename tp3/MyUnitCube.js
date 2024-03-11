@@ -37,8 +37,6 @@ export class MyUnitCube extends CGFobject {
             0.5, 0.5, 0.5,      //666
             0.5, 0.5, -0.5      //777
         ];
-<<<<<<< HEAD
-=======
 		
 		this.indices = [
 			0, 1, 2,
@@ -59,7 +57,6 @@ export class MyUnitCube extends CGFobject {
 			4, 5, 1,
 			1, 0, 4
 		];
->>>>>>> master
 
 		this.normals = [
             0, 0, -1,			//0
@@ -88,31 +85,6 @@ export class MyUnitCube extends CGFobject {
             1, 0, 0				//777
         ];
 
-<<<<<<< HEAD
-		//Counter-clockwise reference of vertices
-		this.indices = [
-
-            0, 1, 2,
-            2, 3, 0,
-
-            5, 4, 7,
-            7, 6, 5,
-
-            1, 5, 6,
-            6, 2, 1,
-
-            4, 0, 3,
-            3, 7, 4,
-
-            6, 7, 3,
-            3, 2, 6,
-
-            4, 5, 1,
-            1, 0, 4
-        ];
-
-=======
->>>>>>> master
 
 		//The defined indices (and corresponding vertices)
 		//will be read in groups of three to draw triangles
@@ -120,8 +92,4 @@ export class MyUnitCube extends CGFobject {
 
 		this.initGLBuffers();
 	}
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> master
