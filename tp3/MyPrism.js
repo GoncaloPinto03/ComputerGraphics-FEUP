@@ -5,14 +5,14 @@ import {CGFobject} from '../lib/CGF.js';
  * @param scene - Reference to MyScene object
  */
 export class MyPrism extends CGFobject {
-	constructor(scene, slices, stacks) {
-		super(scene);
+    constructor(scene, slices, stacks) {
+        super(scene);
         this.slices = slices;
         this.stacks = stacks;
-		this.initBuffers();
-	}
-	
-	initBuffers() {
+        this.initBuffers();
+    }
+    
+    initBuffers() {
         this.vertices = [];
         this.indices = [];
         this.normals = [];
@@ -42,8 +42,8 @@ export class MyPrism extends CGFobject {
                 );
                 
                 this.indices.push(
-                    index, index+1, index+2,
-                    index+1, index+2, index+3
+                    index+2, index, index+1,
+                    index+1, index+3, index+2
                 );
 
                 let x = Math.cos((i+0.5) * angle);
@@ -61,11 +61,12 @@ export class MyPrism extends CGFobject {
             }
         }
 
-		//The defined indices (and corresponding vertices)
-		//will be read in groups of three to draw triangles
-		this.primitiveType = this.scene.gl.TRIANGLES;
+        //The defined indices (and corresponding vertices)
+        //will be read in groups of three to draw triangles
+        this.primitiveType = this.scene.gl.TRIANGLES;
 
-		this.initGLBuffers();
-	}
+        this.initGLBuffers();
+    }
+    updateBuffers(complexity){
+    }
 }
-
