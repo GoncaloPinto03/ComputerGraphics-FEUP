@@ -4,7 +4,8 @@
 
 ## TP 4 Notes
 
-- 
+- On the first exercise we applied textures to the tangram.
+- On the second we applied textures on all faces of a cube. It looks like a cube from minecraft :))
 
 ### Exercise 1 - Applying textures to Tangram
 
