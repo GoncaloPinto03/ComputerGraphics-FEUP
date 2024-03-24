@@ -29,14 +29,15 @@ export class MyScene extends CGFscene {
     this.axis = new CGFaxis(this);
     this.tangram = new MyTangram(this);
     this.unitCube = new MyUnitCube(this);
-    this.cubeQuad = new MyUnitCubeQuad(this);
+    this.unitCubeQuad = new MyUnitCubeQuad(this);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
-    this.displayTangram = true;
-    this.displayUnitCube = false;
-    this.displayCubeQuad = true;
     this.scaleFactor = 1;
+    this.displayTangram = false;
+    this.displayUnitCube = true;
+    this.displayUnitCubeQuad = true;
+
   }
   initLights() {
     this.lights[0].setPosition(15, 2, 5, 1);
@@ -73,19 +74,8 @@ export class MyScene extends CGFscene {
     // Draw axis
     if (this.displayAxis) this.axis.display();
 
-    if (this.displayCubeQuad) {
-      this.pushMatrix();
-      this.scale(0.5, 0.5, 0.5);
-      this.translate(4.5,0,4);
-      this.rotate(3*Math.PI/2,1,0,0);
-      this.translate(-0.5,0,-0.5);
-      this.scale(8,8,1);
-      this.cubeQuad.display();
-      this.popMatrix();
-    }
-    
     this.setDefaultAppearance();
-    
+
     var sca = [
       this.scaleFactor,
       0.0,
@@ -104,21 +94,40 @@ export class MyScene extends CGFscene {
       0.0,
       1.0,
     ];
-    
-    this.multMatrix(sca);
-    
-    // ---- BEGIN Primitive drawing section
-    
-    if (this.displayTangram) {
-      this.pushMatrix();
-      this.scale(0.5, 0.5, 0.5);
-      this.translate(4.5,0.1,4);
-      this.rotate(3 * Math.PI / 2, 1, 0, 0);
-      this.tangram.display();
-      this.popMatrix();
-    }
-    
-    // ---- END Primitive drawing section
 
+    this.multMatrix(sca);
+
+    // ---- BEGIN Primitive drawing section
+
+    if(this.displayTangram){
+      this.pushMatrix()
+      this.rotate(3 * Math.PI / 2, 1, 0, 0)
+      this.translate(4.5, -4.5, -0.6)
+      this.scale(9, 9, 1)
+      this.unitCube.display()
+      this.popMatrix()
+      
+      this.pushMatrix()
+      this.rotate(3 * Math.PI / 2, 1, 0, 0)
+      this.translate(4.5, -4.5, 0)
+      this.tangram.display()
+      this.popMatrix()
+    }
+
+    this.pushMatrix()
+    this.rotate(3 * Math.PI / 2, 1, 0, 0)
+    this.translate(4.5, -4.5, -0.6)
+    this.scale(9, 9, 1)
+    this.unitCubeQuad.display()
+    this.popMatrix()
+    
+    this.pushMatrix()
+    this.rotate(3 * Math.PI / 2, 1, 0, 0)
+    this.translate(4.5, -4.5, 0)
+    this.tangram.display()
+
+    // ---- END Primitive drawing section
   }
 }
+
+

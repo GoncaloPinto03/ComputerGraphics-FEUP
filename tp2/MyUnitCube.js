@@ -1,6 +1,6 @@
 import {CGFobject} from '../lib/CGF.js';
 /**
- * MyDiamond
+ * MyUnitCube
  * @constructor
  * @param scene - Reference to MyScene object
  */
@@ -11,24 +11,7 @@ export class MyUnitCube extends CGFobject {
 	}
 	
 	initBuffers() {
-		// we are defining 3 times each vertice so that we can see them through all plans (xOy, yOz and xOz)
 		this.vertices = [
-			-0.5, -0.5, 0.5,	//0 - BFL -> Bottom Front Left
-			0.5, -0.5, 0.5,	    //1 - BFR
-			-0.5, 0.5, 0.5,	    //2 - TPF
-            0.5, 0.5, 0.5,	    //3 - TPR
-            -0.5, -0.5, -0.5,	//4 - BBL
-			0.5, -0.5, -0.5,	//5 - BBR
-			-0.5, 0.5, -0.5,	//6 - TPL
-            0.5, 0.5, -0.5,	    //7 - TPR
-			-0.5, -0.5, 0.5,	//0 - BFL -> Bottom Front Left
-			0.5, -0.5, 0.5,	    //1 - BFR
-			-0.5, 0.5, 0.5,	    //2 - TPF
-            0.5, 0.5, 0.5,	    //3 - TPR
-            -0.5, -0.5, -0.5,	//4 - BBL
-			0.5, -0.5, -0.5,	//5 - BBR
-			-0.5, 0.5, -0.5,	//6 - TPL
-            0.5, 0.5, -0.5,	    //7 - TPR
 			-0.5, -0.5, 0.5,	//0 - BFL -> Bottom Front Left
 			0.5, -0.5, 0.5,	    //1 - BFR
 			-0.5, 0.5, 0.5,	    //2 - TPF
@@ -69,4 +52,3 @@ export class MyUnitCube extends CGFobject {
 		this.initGLBuffers();
 	}
 }
-

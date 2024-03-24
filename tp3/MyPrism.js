@@ -65,8 +65,8 @@ export class MyPrism extends CGFobject {
         //will be read in groups of three to draw triangles
         this.primitiveType = this.scene.gl.TRIANGLES;
 
-        this.initGLBuffers();
-    }
+		this.initGLBuffers();
+	}
     updateBuffers(complexity){
     }
 }

@@ -75,19 +75,17 @@ export class MyTangram extends CGFobject {
     
     display() {
         this.scene.pushMatrix();
-        var transposedMatrix = [
-            this.scaleFactor, 0, 0, 0,
-            0, this.scaleFactor, 0, 0,
-            0, 0, this.scaleFactor, 0,
-            0.5, 0.5, 0, this.scaleFactor
-        ]
+        let translationMatrix = [
+            1, 0, 0, 0,
+            0, 1, 0, 0,
+            0, 0, 1, 0,
+            0.4, 1.4, 0, 1
+        ];
 
-        // Draw diamond
-        this.scene.multMatrix(transposedMatrix);  // same as this.translate(0.5,0.5,0);
-        // this.diamondMaterial.apply();
-        this.scene.customMaterial.apply();
-        this.diamond.display();
-        this.scene.popMatrix();
+        this.scene.multMatrix(translationMatrix)
+        this.texture.apply()
+        this.diamond.display()
+        this.scene.popMatrix()
 
         // Draw blue big triangle
         // NOTE: first we rotate and then translate, but in code we do the reverse reasoning

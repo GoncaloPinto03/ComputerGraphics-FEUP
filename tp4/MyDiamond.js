@@ -26,22 +26,31 @@ export class MyDiamond extends CGFobject {
 		this.indices = [
 			0, 1, 2,
 			1, 3, 2,
-			4, 5, 6,
-			5, 7, 6
+			6, 5, 4,
+			6, 7, 5
 		];
 
-		// the first 4 normals point to the positive directon of the z axis	
-		// the last 4 normals point to the negative direction of the z axis
 		this.normals = [
-			0, 0, 1,		
-			0, 0, 1,		
-			0, 0, 1,		
-			0, 0, 1,		
-			0, 0, -1,		
+			0, 0, 1,
+			0, 0, 1,
+			0, 0, 1,
+			0, 0, 1,
 			0, 0, -1,
 			0, 0, -1,
-			0, 0, -1
-		];
+			0, 0, -1,
+			0, 0, -1,
+		]
+
+		this.texCoords = [
+			0, 0.5,
+			0.25, 0.75, 
+			0.25, 0.25,
+			0.5, 0.5,
+			0, 0.5,
+			0.25, 0.75, 
+			0.25, 0.25,
+			0.5, 0.5,
+		]
 
 		//The defined indices (and corresponding vertices)
 		//will be read in groups of three to draw triangles
@@ -50,4 +59,3 @@ export class MyDiamond extends CGFobject {
 		this.initGLBuffers();
 	}
 }
-
