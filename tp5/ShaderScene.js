@@ -77,8 +77,6 @@ export class ShaderScene extends CGFscene {
 		this.appearance.setTextureWrap('REPEAT', 'REPEAT');
 
 		this.texture2 = new CGFtexture(this, "textures/waterMap.jpg");
-		// this.appearance.setTexture(this.texture2);
-		// this.appearance.setTextureWrap('REPEAT', 'REPEAT');
 
 		// shaders initialization
 

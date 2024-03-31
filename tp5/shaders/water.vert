@@ -14,3 +14,4 @@ void main() {
 	vec3 offset = aVertexNormal * 0.1 * texture2D(waterMap, vTextureCoord + vec2(0.1*timeFactor, 0.1*timeFactor)).b;
 	gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition + offset, 1.0);
 }
+
