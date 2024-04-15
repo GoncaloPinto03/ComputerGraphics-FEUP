@@ -1,6 +1,6 @@
 import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFshader, CGFtexture } from "../lib/CGF.js";
 import { MyPlane } from "./MyPlane.js";
-import { MySphere } from "./MySphere.js";
+import { MyPanorama } from "./MyPanorama.js";
 
 /**
  * MyScene
@@ -26,8 +26,7 @@ export class MyScene extends CGFscene {
 
     //Initialize scene objects
     this.axis = new CGFaxis(this);
-    this.plane = new MyPlane(this,30);
-    this.sphere = new MySphere(this, 500, 100, 2);
+    this.plane = new MyPlane(this,30);    
 
     //Objects connected to MyInterface
     this.displayAxis = true;
@@ -36,16 +35,25 @@ export class MyScene extends CGFscene {
     this.enableTextures(true);
 
     // terrain texture
-    this.texture = new CGFtexture(this, "images/terrain.jpg");
-    this.appearance = new CGFappearance(this);
-    this.appearance.setTexture(this.texture);
-    this.appearance.setTextureWrap('REPEAT', 'REPEAT');
+    this.terrainTexture = new CGFtexture(this, "images/terrain.jpg");
+    this.terrainAppearance = new CGFappearance(this);
+    this.terrainAppearance.setTexture(this.terrainTexture);
+    this.terrainAppearance.setTextureWrap('REPEAT', 'REPEAT');
 
     // earth texture
     this.earthTexture = new CGFtexture(this, "images/earth.jpg");
     this.earthAppearance = new CGFappearance(this);
     this.earthAppearance.setTexture(this.earthTexture);
     this.earthAppearance.setTextureWrap('REPEAT', 'REPEAT');
+
+    // panorama texture
+    this.panoramaTexture = new CGFtexture(this, "images/panorama1.jpg");
+    this.panoramaAppearance = new CGFappearance(this);
+    this.panoramaAppearance.setTexture(this.panoramaTexture);
+    this.panoramaAppearance.setEmission(1, 1, 1, 1); 
+    this.panoramaAppearance.setTextureWrap('REPEAT', 'REPEAT');
+
+    this.panorama = new MyPanorama(this, this.panoramaAppearance);
 
   }
   initLights() {
@@ -86,7 +94,7 @@ export class MyScene extends CGFscene {
     // ---- BEGIN Primitive drawing section
 
     this.pushMatrix();
-    this.appearance.apply();
+    this.terrainAppearance.apply();
     this.translate(0,-100,0);
     this.scale(400,400,400);
     this.rotate(-Math.PI/2.0,1,0,0);
@@ -94,11 +102,9 @@ export class MyScene extends CGFscene {
     this.popMatrix();
 
     this.pushMatrix();
-    this.rotate(Math.PI,0,1,0);
-    this.earthAppearance.apply();
-    this.sphere.display();
+    this.panoramaAppearance.apply();
+    this.panorama.display();
     this.popMatrix();
-
 
     // ---- END Primitive drawing section
   }
