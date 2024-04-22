@@ -29,47 +29,35 @@ export class MyScene extends CGFscene {
     //Initialize scene objects
     this.axis = new CGFaxis(this);
     this.plane = new MyPlane(this,30);
-    this.sphere = new MySphere(this, 500, 100, 2.5);
+    this.stem = 
+  
+    this.enableTextures(true);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
+    this.displayStem = true;
     this.scaleFactor = 1;
-
-    this.enableTextures(true);
 
     // terrain texture
     this.terrainTexture = new CGFtexture(this, "images/terrain.jpg");
     this.terrainAppearance = new CGFappearance(this);
     this.terrainAppearance.setTexture(this.terrainTexture);
     this.terrainAppearance.setTextureWrap('REPEAT', 'REPEAT');
-
-    // earth texture
-    this.earthTexture = new CGFtexture(this, "images/earth.jpg");
-    this.earthAppearance = new CGFappearance(this);
-    this.earthAppearance.setTexture(this.earthTexture);
-    this.earthAppearance.setTextureWrap('REPEAT', 'REPEAT');
-
-    // // stem texture 
-    // this.textureTop = new CGFtexture(this, "images/mineTop")
-    // this.textureBottom = new CGFtexture(this, "images/mineBottom")
-    // this.textureSide = new CGFtexture(this, "images/mineSide")
-    // this.stem = new MyStem(this, 100, 20, this.textureTop, this.textureBottom, this.textureSide);
-
-    // //Objects connected to MyInterface
-    // this.displayAxis = true;
-    // this.displaySphere = false;
-    // this.displayStem = true;
-    // this.scaleFactor = 1;
-
+    
     // panorama texture
     this.panoramaTexture = new CGFtexture(this, "images/panorama1.jpg");
     this.panoramaAppearance = new CGFappearance(this);
     this.panoramaAppearance.setTexture(this.panoramaTexture);
     this.panoramaAppearance.setEmission(1, 1, 1, 1); 
     this.panoramaAppearance.setTextureWrap('REPEAT', 'REPEAT');
-
+    
     this.panorama = new MyPanorama(this, this.panoramaAppearance);
-
+    
+    // stem texture 
+    this.textureTop = new CGFtexture(this, "images/mineTop.png")
+    this.textureBottom = new CGFtexture(this, "images/mineBottom.png")
+    this.textureSide = new CGFtexture(this, "images/mineSide.png")
+    this.stem = new MyStem(this, 100, 20, this.textureTop, this.textureBottom, this.textureSide);
   }
   initLights() {
     this.lights[0].setPosition(15, 0, 5, 1);
@@ -116,24 +104,21 @@ export class MyScene extends CGFscene {
     this.plane.display();
     this.popMatrix();
 
-    if (this.displaySphere) {
-      this.pushMatrix();
-      this.earthAppearance.apply();
-      this.rotate(Math.PI,0,1,0);
-      this.sphere.display();
-      this.popMatrix();
-    }
-
-    if (this.displayStem) {
-      this.stem.display();
-    }
-    
-
     this.pushMatrix();
     this.panoramaAppearance.apply();
     this.panorama.display();
     this.popMatrix();
 
+    if (this.displayStem) {
+      // this.textureBottom.bind();
+      // this.textureSide.bind();
+      this.pushMatrix();
+      this.textureTop.bind();
+      // need to apply the faces of the stem, like quad in MyUnitCubeQuad
+      this.scale(0.5, 0.5, 5);
+      this.stem.display();
+      this.popMatrix();
+    }
     // ---- END Primitive drawing section
   }
 }

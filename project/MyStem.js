@@ -86,14 +86,4 @@ export class MyStem extends CGFobject {
         // Initialize WebGL buffers
         this.initGLBuffers();
     }
-    display() {
-        // this.textureTop.bind();
-        // this.textureBottom.bind();
-        // this.textureSide.bind();
-        this.pushMatrix();
-        // need to apply the faces of the stem, like quad in MyUnitCubeQuad
-        this.scale(0.5, 0.5, 5);
-        this.popMatrix();
-        
-    }
 }
