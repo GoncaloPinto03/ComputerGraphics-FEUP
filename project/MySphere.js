@@ -1,11 +1,12 @@
 import {CGFobject} from '../lib/CGF.js';
 
 export class MySphere extends CGFobject {
-    constructor(scene, slices, stacks, radius) {
+    constructor(scene, slices, stacks, radius, pan) {
         super(scene);
         this.slices = slices;
         this.stacks = stacks;
         this.radius = radius;
+        this.pan = pan;
         this.initBuffers();
     }
     initBuffers() {
@@ -22,10 +23,15 @@ export class MySphere extends CGFobject {
                 let x = this.radius * Math.cos(longitude * alpha) * Math.sin(beta*latitude);
                 let y = this.radius * Math.cos(beta*latitude);
                 let z = this.radius * Math.sin(longitude * alpha) * Math.sin(beta*latitude);
-
-                this.vertices.push(z, y, x);
-                this.normals.push(x, y, z);
                 
+                if(this.pan){
+                    this.vertices.push(x, y, z);
+                    this.normals.push(-x, -y, -z);
+                }
+                else{
+                    this.vertices.push(z, y, x);
+                    this.normals.push(x, y, z);
+                }
                 this.texCoords.push(
                     longitude/this.slices,
                     latitude/this.stacks)
@@ -37,15 +43,16 @@ export class MySphere extends CGFobject {
             for(var longitude = 0; longitude < this.slices; longitude++){
                 let a = (latitude * (this.slices + 1)) + longitude;
                 let b = a + this.slices + 1;
-          
-                this.indices.push(
-                    a, b,
-                    a + 1
-                );
-                this.indices.push(
-                    b,
-                    b + 1, a + 1
-                );                
+                 
+                if(this.pan){
+                    this.indices.push(b, a + 1, a);
+                    this.indices.push(b + 1, a + 1, b);
+
+                }
+                else{
+                    this.indices.push(a, b, a + 1);
+                    this.indices.push(b, b + 1, a + 1);
+                }       
             }
         }
 

@@ -1,7 +1,6 @@
 import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFshader, CGFtexture } from "../lib/CGF.js";
 import { MyPlane } from "./MyPlane.js";
 import { MySphere } from "./MySphere.js";
-import { MyStem } from "./MyStem.js";
 
 /**
  * MyScene
@@ -28,15 +27,19 @@ export class MyScene extends CGFscene {
     //Initialize scene objects
     this.axis = new CGFaxis(this);
     this.plane = new MyPlane(this,30);
-    this.sphere = new MySphere(this, 500, 100, 2.5);
+    this.sphere = new MySphere(this, 500, 100, 2);
+
+    //Objects connected to MyInterface
+    this.displayAxis = true;
+    this.scaleFactor = 1;
 
     this.enableTextures(true);
 
     // terrain texture
-    this.texture = new CGFtexture(this, "images/terrain.jpg");
-    this.appearance = new CGFappearance(this);
-    this.appearance.setTexture(this.texture);
-    this.appearance.setTextureWrap('REPEAT', 'REPEAT');
+    this.terrainTexture = new CGFtexture(this, "images/terrain.jpg");
+    this.terrainAppearance = new CGFappearance(this);
+    this.terrainAppearance.setTexture(this.terrainTexture);
+    this.terrainAppearance.setTextureWrap('REPEAT', 'REPEAT');
 
     // earth texture
     this.earthTexture = new CGFtexture(this, "images/earth.jpg");
@@ -44,17 +47,6 @@ export class MyScene extends CGFscene {
     this.earthAppearance.setTexture(this.earthTexture);
     this.earthAppearance.setTextureWrap('REPEAT', 'REPEAT');
 
-    // stem texture 
-    this.textureTop = new CGFtexture(this, "images/mineTop")
-    this.textureBottom = new CGFtexture(this, "images/mineBottom")
-    this.textureSide = new CGFtexture(this, "images/mineSide")
-    this.stem = new MyStem(this, 100, 20, this.textureTop, this.textureBottom, this.textureSide);
-
-    //Objects connected to MyInterface
-    this.displayAxis = true;
-    this.displaySphere = false;
-    this.displayStem = true;
-    this.scaleFactor = 1;
   }
   initLights() {
     this.lights[0].setPosition(15, 0, 5, 1);
@@ -94,25 +86,19 @@ export class MyScene extends CGFscene {
     // ---- BEGIN Primitive drawing section
 
     this.pushMatrix();
-    this.appearance.apply();
+    this.terrainAppearance.apply();
     this.translate(0,-100,0);
     this.scale(400,400,400);
     this.rotate(-Math.PI/2.0,1,0,0);
     this.plane.display();
     this.popMatrix();
 
-    if (this.displaySphere) {
-      this.pushMatrix();
-      this.earthAppearance.apply();
-      this.rotate(Math.PI,0,1,0);
-      this.sphere.display();
-      this.popMatrix();
-    }
+    this.pushMatrix();
+    this.rotate(Math.PI,0,1,0);
+    this.earthAppearance.apply();
+    this.sphere.display();
+    this.popMatrix();
 
-    if (this.displayStem) {
-      this.stem.display();
-    }
-    
 
     // ---- END Primitive drawing section
   }
