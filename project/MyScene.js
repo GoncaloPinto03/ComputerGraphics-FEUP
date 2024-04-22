@@ -1,6 +1,8 @@
 import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFshader, CGFtexture } from "../lib/CGF.js";
 import { MyPlane } from "./MyPlane.js";
 import { MySphere } from "./MySphere.js";
+import { MyStem } from "./MyStem.js";
+import { MyPanorama } from "./MyPanorama.js";
 
 /**
  * MyScene
@@ -27,7 +29,7 @@ export class MyScene extends CGFscene {
     //Initialize scene objects
     this.axis = new CGFaxis(this);
     this.plane = new MyPlane(this,30);
-    this.sphere = new MySphere(this, 500, 100, 2);
+    this.sphere = new MySphere(this, 500, 100, 2.5);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
@@ -46,6 +48,27 @@ export class MyScene extends CGFscene {
     this.earthAppearance = new CGFappearance(this);
     this.earthAppearance.setTexture(this.earthTexture);
     this.earthAppearance.setTextureWrap('REPEAT', 'REPEAT');
+
+    // // stem texture 
+    // this.textureTop = new CGFtexture(this, "images/mineTop")
+    // this.textureBottom = new CGFtexture(this, "images/mineBottom")
+    // this.textureSide = new CGFtexture(this, "images/mineSide")
+    // this.stem = new MyStem(this, 100, 20, this.textureTop, this.textureBottom, this.textureSide);
+
+    // //Objects connected to MyInterface
+    // this.displayAxis = true;
+    // this.displaySphere = false;
+    // this.displayStem = true;
+    // this.scaleFactor = 1;
+
+    // panorama texture
+    this.panoramaTexture = new CGFtexture(this, "images/panorama1.jpg");
+    this.panoramaAppearance = new CGFappearance(this);
+    this.panoramaAppearance.setTexture(this.panoramaTexture);
+    this.panoramaAppearance.setEmission(1, 1, 1, 1); 
+    this.panoramaAppearance.setTextureWrap('REPEAT', 'REPEAT');
+
+    this.panorama = new MyPanorama(this, this.panoramaAppearance);
 
   }
   initLights() {
@@ -93,12 +116,23 @@ export class MyScene extends CGFscene {
     this.plane.display();
     this.popMatrix();
 
-    this.pushMatrix();
-    this.rotate(Math.PI,0,1,0);
-    this.earthAppearance.apply();
-    this.sphere.display();
-    this.popMatrix();
+    if (this.displaySphere) {
+      this.pushMatrix();
+      this.earthAppearance.apply();
+      this.rotate(Math.PI,0,1,0);
+      this.sphere.display();
+      this.popMatrix();
+    }
 
+    if (this.displayStem) {
+      this.stem.display();
+    }
+    
+
+    this.pushMatrix();
+    this.panoramaAppearance.apply();
+    this.panorama.display();
+    this.popMatrix();
 
     // ---- END Primitive drawing section
   }
