@@ -28,10 +28,8 @@ export class MyScene extends CGFscene {
 
     //Initialize scene objects
     this.axis = new CGFaxis(this);
-    this.plane = new MyPlane(this,30); 
-    this.rock = new MyRock(this, 50, 50, 10, 3);  
-    this.rockSet = new MyRockSet(this, 20);
-
+    this.plane = new MyPlane(this, 30); 
+    this.rockSet = new MyRockSet(this);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
@@ -119,10 +117,6 @@ export class MyScene extends CGFscene {
 
     this.pushMatrix();
     this.rockAppearance.apply();
-    this.rock.display();
-    this.popMatrix();
-
-    this.pushMatrix();
     this.rockSet.display();
     this.popMatrix();
 
