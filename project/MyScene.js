@@ -11,7 +11,9 @@ import { MyPanorama } from "./MyPanorama.js";
 export class MyScene extends CGFscene {
   constructor() {
     super();
+    this.stemPositions = [];
   }
+
   init(application) {
     super.init(application);
     
@@ -34,7 +36,7 @@ export class MyScene extends CGFscene {
     this.enableTextures(true);
 
     //Objects connected to MyInterface
-    this.displayAxis = true;
+    this.displayAxis = false;
     this.displayStem = true;
     this.scaleFactor = 1;
 
@@ -58,7 +60,18 @@ export class MyScene extends CGFscene {
     this.textureBottom = new CGFtexture(this, "images/mineBottom.png")
     this.textureSide = new CGFtexture(this, "images/mineSide.png")
     this.stem = new MyStem(this, 100, 20, this.textureTop, this.textureBottom, this.textureSide);
+  
+    // random nr of stems (between 1 and 4)
+    const nrStems = Math.floor(Math.random() * 4) + 1;
+    // initial yPos for the first stem
+    let yPos = 0;
+    // generate random positions for each stem and store them
+    for (let i = 0; i < nrStems; i++) {
+        this.stemPositions.push({ x: 0, y: yPos, z: 0 });
+        yPos += 5; 
+    }
   }
+  
   initLights() {
     this.lights[0].setPosition(15, 0, 5, 1);
     this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
@@ -80,6 +93,7 @@ export class MyScene extends CGFscene {
     this.setSpecular(0.2, 0.4, 0.8, 1.0);
     this.setShininess(10.0);
   }
+
   display() {
     // ---- BEGIN Background, camera and axis setup
     // Clear image and depth buffer everytime we update the scene
@@ -110,14 +124,19 @@ export class MyScene extends CGFscene {
     this.popMatrix();
 
     if (this.displayStem) {
-      // this.textureBottom.bind();
-      // this.textureSide.bind();
-      this.pushMatrix();
-      this.textureTop.bind();
-      // need to apply the faces of the stem, like quad in MyUnitCubeQuad
-      this.scale(0.5, 0.5, 5);
-      this.stem.display();
-      this.popMatrix();
+      for (const pos of this.stemPositions) {
+        this.pushMatrix();
+        this.textureBottom.bind();
+        this.textureSide.bind();
+        this.textureTop.bind();
+        // need to apply the faces of the stem, like quad in MyUnitCubeQuad
+        this.translate(pos.x, pos.y, pos.z)
+        this.rotate(Math.PI/2, 1, 0, 0);
+        this.scale(0.5, 0.5, 5);
+        
+        this.stem.display();
+        this.popMatrix();
+      }
     }
     // ---- END Primitive drawing section
   }
