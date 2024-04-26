@@ -12,6 +12,9 @@ export class MyScene extends CGFscene {
     constructor() {
         super();
         this.stemPositions = [];
+        this.nrStems = Math.floor(Math.random() * 5) + 1; // random number of stems
+        this.length;   
+        console.log("nrStems: "+ this.nrStems);
     }
 
     init(application) {
@@ -31,9 +34,7 @@ export class MyScene extends CGFscene {
         //Initialize scene objects
         this.axis = new CGFaxis(this);
         this.plane = new MyPlane(this, 30);
-        this.stem =
-
-            this.enableTextures(true);
+        this.stem = this.enableTextures(true);
 
         //Objects connected to MyInterface
         this.displayAxis = false;
@@ -61,15 +62,22 @@ export class MyScene extends CGFscene {
         this.textureSide = new CGFtexture(this, "images/stemColor.png")
         this.stem = new MyStem(this, 100, 20, this.textureTop, this.textureBottom, this.textureSide);
 
-        // random nr of stems (between 1 and 4)
-        const nrStems = Math.floor(Math.random() * 4) + 1;
         // initial yPos for the first stem
-        let yPos = 0;
-        // generate random positions for each stem and store them
-        for (let i = 0; i < nrStems; i++) {
+        // need to adjust this value later (ex: -95)
+        let yPos = -10;
+        
+        for (let i = 0; i < this.nrStems; i++) {
+            // generate random stem length
+            let minLength = 1.0; // Minimum length for a substem
+            let maxLength = 5.0; // Maximum length for a substem
+            this.length = minLength + Math.random() * (maxLength - minLength);                
+            
+            console.log("yPos: " + yPos);
+            console.log("len: " + this.length);
             this.stemPositions.push({ x: 0, y: yPos, z: 0 });
-            yPos += 5.1;
+            yPos += this.length;
         }
+
     }
 
     initLights() {
@@ -123,6 +131,7 @@ export class MyScene extends CGFscene {
         this.panorama.display();
         this.popMatrix();
 
+        
         if (this.displayStem) {
             for (const pos of this.stemPositions) {
                 this.pushMatrix();
