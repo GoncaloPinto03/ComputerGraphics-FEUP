@@ -25,6 +25,8 @@ export class MyBee extends CGFobject {
         this.antennae2 = new MyAntennae(this.scene);
         this.wing1 = new MySphere(this.scene, 16, 8, 2, true);
         this.wing2 = new MySphere(this.scene, 16, 8, 2, true);
+        this.wing3 = new MySphere(this.scene, 16, 8, 2, true);
+        this.wing4 = new MySphere(this.scene, 16, 8, 2, true);
 
         // Materials
         this.initMaterials();
@@ -57,7 +59,7 @@ export class MyBee extends CGFobject {
       this.toraxMaterial.setDiffuse(0.95, 0.95, 0.95, 0.0);
       this.toraxMaterial.setSpecular(0.5, 0.5, 0.5, 0.0);
       this.toraxMaterial.setTexture(new CGFtexture(this.scene, "./images/bee2.jpeg"));
-      this.toraxMaterial.setTextureWrap('MIRRORED_REPEAT', 'MIRRORED_REPEAT');
+      this.toraxMaterial.setTextureWrap('REPEAT', 'REPEAT');
 
       // Abdomen
       this.abdomenMaterial = new CGFappearance(this.scene);
@@ -65,11 +67,12 @@ export class MyBee extends CGFobject {
       this.abdomenMaterial.setDiffuse(0.95, 0.95, 0.95, 0.0);
       this.abdomenMaterial.setSpecular(0.5, 0.5, 0.5, 0.0);
       this.abdomenMaterial.setTexture(new CGFtexture(this.scene, "./images/bee.png"));
-      this.abdomenMaterial.setTextureWrap('MIRRORED_REPEAT', 'MIRRORED_REPEAT');
+      this.abdomenMaterial.setTextureWrap('REPEAT', 'REPEAT');
+
+      this.scene.gl.blendFunc(this.scene.gl.SRC_ALPHA, this.scene.gl.ONE_MINUS_SRC_ALPHA);
+      this.scene.gl.enable(this.scene.gl.BLEND);
 
       // Wings
-      // this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
-      // this.gl.enable(this.gl.BLEND);
       this.wingMaterial = new CGFappearance(this.scene);
       this.wingMaterial.setAmbient(0.05, 0.05, 0.05, 0.1);
       this.wingMaterial.setDiffuse(0.6, 0.05, 0.05, 0.1);
@@ -209,7 +212,7 @@ export class MyBee extends CGFobject {
       this.scene.scale(0.5, 1, 1.5);
       this.scene.translate(-3, 0, -7);
       this.wingMaterial.apply();
-      this.wing1.display();
+      this.wing2.display();
       this.scene.popMatrix();
 
       // Wing 3
@@ -219,7 +222,7 @@ export class MyBee extends CGFobject {
       this.scene.scale(0.5, 1, 2.5);
       this.scene.translate(0, 0, -7);
       this.wingMaterial.apply();
-      this.wing1.display();
+      this.wing3.display();
       this.scene.popMatrix();
 
       // Wing 4
@@ -229,7 +232,7 @@ export class MyBee extends CGFobject {
       this.scene.scale(0.5, 1, 2.5);
       this.scene.translate(0, 0, -7);
       this.wingMaterial.apply();
-      this.wing1.display();
+      this.wing4.display();
       this.scene.popMatrix();
     }
 }
