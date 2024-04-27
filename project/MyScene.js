@@ -3,6 +3,7 @@ import { MyPlane } from "./MyPlane.js";
 import { MySphere } from "./MySphere.js";
 import { MyStem } from "./MyStem.js";
 import { MyPanorama } from "./MyPanorama.js";
+import { MyLeaf } from "./MyLeaf.js";
 
 /**
  * MyScene
@@ -12,8 +13,11 @@ export class MyScene extends CGFscene {
     constructor() {
         super();
         this.stemPositions = [];
-        this.nrStems = Math.floor(Math.random() * 5) + 1; // random number of stems
+        this.nrStems = Math.floor(Math.random() * 4) + 1; // random number of stems
         this.length;   
+        // initial yPos for the first stem
+        // need to adjust this value later (ex: -95)
+        this.yPos = -5;
         console.log("nrStems: "+ this.nrStems);
     }
 
@@ -35,10 +39,13 @@ export class MyScene extends CGFscene {
         this.axis = new CGFaxis(this);
         this.plane = new MyPlane(this, 30);
         this.stem = this.enableTextures(true);
+        this.leafStem1 = this.enableTextures(true);
+        this.leafStem2 = this.enableTextures(true);
 
         //Objects connected to MyInterface
         this.displayAxis = false;
         this.displayStem = true;
+        this.displayLeafStem = true;
         this.scaleFactor = 1;
 
         // terrain texture
@@ -56,27 +63,38 @@ export class MyScene extends CGFscene {
 
         this.panorama = new MyPanorama(this, this.panoramaAppearance);
 
-        // stem texture 
-        this.textureTop = new CGFtexture(this, "images/stemColor.png")
-        this.textureBottom = new CGFtexture(this, "images/stemColor.png")
-        this.textureSide = new CGFtexture(this, "images/stemColor.png")
-        this.stem = new MyStem(this, 100, 20, this.textureTop, this.textureBottom, this.textureSide);
+        // stem texture
+        this.stemTextureTop = new CGFtexture(this, "images/stemColor.png")
+        this.stemTextureBottom = new CGFtexture(this, "images/stemColor.png")
+        this.stemTextureSide = new CGFtexture(this, "images/stemColor.png")
+        this.stem = new MyStem(this, 100, 20, this.stemTextureTop, this.stemTextureBottom, this.stemTextureSide);
 
-        // initial yPos for the first stem
-        // need to adjust this value later (ex: -95)
-        let yPos = -10;
-        
+        // stemLeaf texture
+        this.leafTextureTop = new CGFtexture(this, "images/leafColor.png")
+        this.leafTextureBottom = new CGFtexture(this, "images/leafColor.png")
+        this.leafCurvature1 = Math.PI / (Math.floor(Math.random() * (8 - 5 + 1)) + 5); 
+        this.leafCurvature2 = Math.PI / (Math.floor(Math.random() * (8 - 5 + 1)) + 5); 
+        this.leafStem1 = new MyLeaf(this, this.leafTextureTop, this.leafTextureBottom, this.leafCurvature);
+        this.leafStem2 = new MyLeaf(this, this.leafTextureTop, this.leafTextureBottom, this.leafCurvature);
+        // leaves to be part of flower's top
+        // this.leaf = new MyLeaf(this, this.leafTextureTop, this.leafTextureBottom);
+
+
+        // handle stem position        
         for (let i = 0; i < this.nrStems; i++) {
             // generate random stem length
             let minLength = 1.0; // Minimum length for a substem
             let maxLength = 5.0; // Maximum length for a substem
             this.length = minLength + Math.random() * (maxLength - minLength);                
             
-            console.log("yPos: " + yPos);
+            console.log("yPos: " + this.yPos);
             console.log("len: " + this.length);
-            this.stemPositions.push({ x: 0, y: yPos, z: 0 });
-            yPos += this.length;
+            this.stemPositions.push({ x: 0, y: this.yPos, z: 0, length: this.length });
+            
+            this.yPos += this.length;
         }
+
+        // handle leaf stem position
 
     }
 
@@ -131,21 +149,84 @@ export class MyScene extends CGFscene {
         this.panorama.display();
         this.popMatrix();
 
-        
+        let i = 1;
         if (this.displayStem) {
             for (const pos of this.stemPositions) {
                 this.pushMatrix();
-                this.textureBottom.bind();
-                this.textureSide.bind();
-                this.textureTop.bind();
+                this.stemTextureBottom.bind();
+                this.stemTextureSide.bind();
+                this.stemTextureTop.bind();
+
                 this.translate(pos.x, pos.y, pos.z)
                 this.rotate(Math.PI / 2, 1, 0, 0);
                 this.scale(0.3, 0.3, 5);
 
                 this.stem.display();
                 this.popMatrix();
+                
+                if (this.displayLeafStem && i < this.nrStems && this.nrStems > 1) {
+                    // Render leaf at the end of the substem
+                    this.pushMatrix();
+                    this.leafTextureTop.bind();
+                    this.leafTextureBottom.bind();
+        
+                    // Position the leaf at the end of the substem
+                    let leafPositionZ = pos.length * 0.3; // Adjust as needed based on scaling
+        
+                    this.translate(pos.x, pos.y-1, pos.z + leafPositionZ);
+                    this.rotate(this.leafCurvature1, 1, 0, 0);   // add soft rotation to the stem leaves
+                    this.rotate(Math.PI / 2, 1, 0, 0);
+                    this.scale(1.5, 1.5, 1.5);
+        
+                    this.leafStem1.display();
+                    this.popMatrix();
+                    
+                    // Render leaf at the end of the substem
+                    this.pushMatrix();
+                    this.leafTextureTop.bind();
+                    this.leafTextureBottom.bind();
+        
+                    this.translate(pos.x, pos.y-1, pos.z - leafPositionZ);
+                    this.rotate(-this.leafCurvature2, 1, 0, 0);   // add soft rotation to the stem leaves
+                    this.rotate(Math.PI, 0, 1, 0);
+                    this.rotate(Math.PI / 2, 1, 0, 0);
+                    this.scale(1.5, 1.5, 1.5);
+        
+                    this.leafStem2.display();
+                    this.popMatrix();
+                }
+                i++;
             }
+
+            // if (this.displayLeafStem1) {
+            //     this.pushMatrix();
+            //     this.leafTextureTop.bind();
+            //     this.leafTextureBottom.bind();
+    
+            //     this.translate(0, 0, 1.5);
+            //     this.rotate(this.leafCurvature1, 1, 0, 0);   // add soft rotation to the stem leaves
+            //     this.rotate(Math.PI / 2, 1, 0, 0);
+            //     this.scale(1.5, 1.5, 1.5);
+    
+            //     this.leafStem1.display();
+            //     this.popMatrix();
+            // }
+            // if (this.displayLeafStem2) {
+            //     this.pushMatrix();
+            //     this.leafTextureTop.bind();
+            //     this.leafTextureBottom.bind();
+                
+            //     this.translate(0, 0, -1.5);
+            //     this.rotate(-this.leafCurvature2, 1, 0, 0);   // add soft rotation to the stem leaves
+            //     this.rotate(Math.PI, 0, 1, 0);
+            //     this.rotate(Math.PI / 2, 1, 0, 0);
+            //     this.scale(1.5, 1.5, 1.5);
+    
+            //     this.leafStem2.display();
+            //     this.popMatrix();
+            // }
         }
+        
         // ---- END Primitive drawing section
     }
 }

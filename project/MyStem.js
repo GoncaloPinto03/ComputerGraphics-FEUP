@@ -23,22 +23,12 @@ export class MyStem extends CGFobject {
         this.normals = [];
         this.texCoords = [];
 
-        const convexCurve = (z) => Math.sin(z * Math.PI/2); // Example convex curve function
-
         for (let i = 0; i <= this.slices; i++) {
             for (let j = 0; j <= this.stacks; j++) {
                 let theta = (i / this.slices) * (2 * Math.PI);
                 let x = Math.cos(theta);
                 let y = Math.sin(theta);
-                let z = (j / this.stacks) * 2 - 1;
-
-                // let dx = (Math.random() - 0.5) * maxDisplacement;
-                // let dy = (Math.random() - 0.5) * maxDisplacement;
-
-                // x += dx;
-                // y += dy;
-                z = z * convexCurve(z);
-
+                let z = (j / this.stacks);
 
                 this.vertices.push(x, y, z);
                 this.normals.push(x, y, 0);
