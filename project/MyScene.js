@@ -4,6 +4,7 @@ import { MySphere } from "./MySphere.js";
 import { MyStem } from "./MyStem.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyLeaf } from "./MyLeaf.js";
+import { MyReceptacle } from "./MyReceptacle.js";
 
 /**
  * MyScene
@@ -15,10 +16,14 @@ export class MyScene extends CGFscene {
         this.stemPositions = [];
         this.nrStems = Math.floor(Math.random() * 4) + 1; // random number of stems
         this.length;   
+
         // initial yPos for the first stem
         // need to adjust this value later (ex: -95)
-        this.yPos = -5;
+        this.yPosStem = -10;
         console.log("nrStems: "+ this.nrStems);
+
+        // receptacle radius
+        this.radius = 1 + Math.random() * (2 - 1);
     }
 
     init(application) {
@@ -46,6 +51,7 @@ export class MyScene extends CGFscene {
         this.displayAxis = false;
         this.displayStem = true;
         this.displayLeafStem = true;
+        this.displayReceptacle = true;
         this.scaleFactor = 1;
 
         // terrain texture
@@ -60,7 +66,6 @@ export class MyScene extends CGFscene {
         this.panoramaAppearance.setTexture(this.panoramaTexture);
         this.panoramaAppearance.setEmission(1, 1, 1, 1);
         this.panoramaAppearance.setTextureWrap('REPEAT', 'REPEAT');
-
         this.panorama = new MyPanorama(this, this.panoramaAppearance);
 
         // stem texture
@@ -79,6 +84,10 @@ export class MyScene extends CGFscene {
         // leaves to be part of flower's top
         // this.leaf = new MyLeaf(this, this.leafTextureTop, this.leafTextureBottom);
 
+        // receptacle texture
+        this.receptacleTexture = new CGFtexture(this, "images/leafColor.png");
+        this.receptacle = new MyReceptacle(this, 100, 10, this.radius, this.receptacleTexture);
+
 
         // handle stem position        
         for (let i = 0; i < this.nrStems; i++) {
@@ -87,13 +96,14 @@ export class MyScene extends CGFscene {
             let maxLength = 5.0; // Maximum length for a substem
             this.length = minLength + Math.random() * (maxLength - minLength);                
             
-            console.log("yPos: " + this.yPos);
+            console.log("yPos: " + this.yPosStem);
             console.log("len: " + this.length);
-            this.stemPositions.push({ x: 0, y: this.yPos, z: 0, length: this.length });
+            this.stemPositions.push({ x: 0, y: this.yPosStem, z: 0, length: this.length });
             
-            this.yPos += this.length;
+            this.yPosStem += this.length;
         }
 
+        
         // handle leaf stem position
 
     }
@@ -197,34 +207,14 @@ export class MyScene extends CGFscene {
                 }
                 i++;
             }
-
-            // if (this.displayLeafStem1) {
-            //     this.pushMatrix();
-            //     this.leafTextureTop.bind();
-            //     this.leafTextureBottom.bind();
-    
-            //     this.translate(0, 0, 1.5);
-            //     this.rotate(this.leafCurvature1, 1, 0, 0);   // add soft rotation to the stem leaves
-            //     this.rotate(Math.PI / 2, 1, 0, 0);
-            //     this.scale(1.5, 1.5, 1.5);
-    
-            //     this.leafStem1.display();
-            //     this.popMatrix();
-            // }
-            // if (this.displayLeafStem2) {
-            //     this.pushMatrix();
-            //     this.leafTextureTop.bind();
-            //     this.leafTextureBottom.bind();
-                
-            //     this.translate(0, 0, -1.5);
-            //     this.rotate(-this.leafCurvature2, 1, 0, 0);   // add soft rotation to the stem leaves
-            //     this.rotate(Math.PI, 0, 1, 0);
-            //     this.rotate(Math.PI / 2, 1, 0, 0);
-            //     this.scale(1.5, 1.5, 1.5);
-    
-            //     this.leafStem2.display();
-            //     this.popMatrix();
-            // }
+        }
+        if (this.displayReceptacle) {
+            this.pushMatrix();
+            this.receptacleTexture.bind();
+            let currentYPost = this.yPosStem - this.length + this.radius;
+            this.translate(0,currentYPost,0);
+            this.receptacle.display();
+            this.popMatrix();
         }
         
         // ---- END Primitive drawing section
