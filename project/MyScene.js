@@ -19,8 +19,8 @@ export class MyScene extends CGFscene {
 
         // initial yPos for the first stem
         // need to adjust this value later (ex: -95)
-        this.yPosStem = -10;
-        console.log("nrStems: "+ this.nrStems);
+        this.yPosStem = 0;
+        console.log("nrStems: " + this.nrStems);
 
         // receptacle radius
         this.radius = 1 + Math.random() * (2 - 1);
@@ -75,18 +75,43 @@ export class MyScene extends CGFscene {
         this.stem = new MyStem(this, 100, 20, this.stemTextureTop, this.stemTextureBottom, this.stemTextureSide);
 
         // stemLeaf texture
+        // update this stuff and everything related to MyPetal
         this.leafTextureTop = new CGFtexture(this, "images/leafColor.png")
         this.leafTextureBottom = new CGFtexture(this, "images/leafColor.png")
-        this.leafCurvature1 = Math.PI / (Math.floor(Math.random() * (8 - 5 + 1)) + 5); 
-        this.leafCurvature2 = Math.PI / (Math.floor(Math.random() * (8 - 5 + 1)) + 5); 
-        this.leafStem1 = new MyLeaf(this, this.leafTextureTop, this.leafTextureBottom, this.leafCurvature);
-        this.leafStem2 = new MyLeaf(this, this.leafTextureTop, this.leafTextureBottom, this.leafCurvature);
+        this.leafCurvature = Math.PI / (Math.floor(Math.random() * (8 - 5 + 1)) + 5); 
+        this.leafCurvature1 = 0; 
+        this.leafCurvature2 = 0;
+        this.leaf1 = 0;     // just to control the y coord of the leaf
+        this.leaf2 = 0;
+
+        // decide which leaf is going to have the curvature
+        // TODO: decide if it is better to apply the curvature to both leaves (it stays better)
+        this.randomValue = Math.random();
+        if (this.randomValue >= 0.5) {
+            this.leafCurvature1 = this.leafCurvature;
+            this.leafCurvature2 = this.leafCurvature;
+            this.leaf1 = 0.6;
+            this.leaf2 = 0.6;
+        }
+        else {
+            this.leafCurvature2 = this.leafCurvature;
+            this.leafCurvature1 = this.leafCurvature;
+            this.leaf2 = 0.6;
+            this.leaf1 = 0.6;
+        }
+
+        // console.log('randomValue' + this.randomValue + '\n');
+        // console.log('curv1' + this.leafCurvature1 + '\n');
+        // console.log('curv2' + this.leafCurvature2 + '\n');
+        
+        this.leafStem1 = new MyLeaf(this, this.leafTextureTop, this.leafTextureBottom);
+        this.leafStem2 = new MyLeaf(this, this.leafTextureTop, this.leafTextureBottom);
         // leaves to be part of flower's top
         // this.leaf = new MyLeaf(this, this.leafTextureTop, this.leafTextureBottom);
 
         // receptacle texture
         this.receptacleTexture = new CGFtexture(this, "images/leafColor.png");
-        this.receptacle = new MyReceptacle(this, 100, 10, this.radius, this.receptacleTexture);
+        this.receptacle = new MyReceptacle(this, 1000, 10, this.radius, this.receptacleTexture);
 
 
         // handle stem position        
@@ -175,19 +200,17 @@ export class MyScene extends CGFscene {
                 this.popMatrix();
                 
                 if (this.displayLeafStem && i < this.nrStems && this.nrStems > 1) {
+                    // Position the leaf at the end of the substem
+                    let leafPositionZ = 1.3; 
+
                     // Render leaf at the end of the substem
                     this.pushMatrix();
                     this.leafTextureTop.bind();
                     this.leafTextureBottom.bind();
-        
-                    // Position the leaf at the end of the substem
-                    let leafPositionZ = pos.length * 0.3; // Adjust as needed based on scaling
-        
-                    this.translate(pos.x, pos.y-1, pos.z + leafPositionZ);
+                    this.translate(pos.x, pos.y - this.leaf1, pos.z + leafPositionZ);
                     this.rotate(this.leafCurvature1, 1, 0, 0);   // add soft rotation to the stem leaves
                     this.rotate(Math.PI / 2, 1, 0, 0);
                     this.scale(1.5, 1.5, 1.5);
-        
                     this.leafStem1.display();
                     this.popMatrix();
                     
@@ -195,13 +218,11 @@ export class MyScene extends CGFscene {
                     this.pushMatrix();
                     this.leafTextureTop.bind();
                     this.leafTextureBottom.bind();
-        
-                    this.translate(pos.x, pos.y-1, pos.z - leafPositionZ);
+                    this.translate(pos.x, pos.y - this.leaf2, pos.z - leafPositionZ);
                     this.rotate(-this.leafCurvature2, 1, 0, 0);   // add soft rotation to the stem leaves
                     this.rotate(Math.PI, 0, 1, 0);
                     this.rotate(Math.PI / 2, 1, 0, 0);
                     this.scale(1.5, 1.5, 1.5);
-        
                     this.leafStem2.display();
                     this.popMatrix();
                 }
