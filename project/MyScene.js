@@ -30,7 +30,8 @@ export class MyScene extends CGFscene {
 
         // petals y coord
         this.petalYPos;
-        this.numPetals = Math.floor(4 + Math.random() * (10 - 4));
+        this.numPetals = Math.floor(6 + Math.random() * (10 - 6));
+        // this.numPetals = 4;
         this.angleIncrement = 2 * Math.PI / this.numPetals;
         console.log("num petals = " + this.numPetals);
 
@@ -129,12 +130,12 @@ export class MyScene extends CGFscene {
 
 
         // receptacle texture
-        this.receptacleTexture = new CGFtexture(this, "images/leafColor.png");
+        this.receptacleTexture = new CGFtexture(this, "images/receptacleColor.png");
         this.receptacle = new MyReceptacle(this, 1000, 10, this.radius, this.receptacleTexture);
 
         // petals
-        this.petalTextureTop = new CGFtexture(this, "images/mineTop.png");
-        this.petalTextureBottom = new CGFtexture(this, "images/mineTop.png");
+        this.petalTextureTop = new CGFtexture(this, "images/petalColor.png");
+        this.petalTextureBottom = new CGFtexture(this, "images/petalColor.png");
         this.petal1 = new MyPetal(this, this.petalTextureTop, this.petalTextureBottom);
         this.petal2 = new MyPetal(this, this.petalTextureTop, this.petalTextureBottom);
         
@@ -254,17 +255,20 @@ export class MyScene extends CGFscene {
 
                 for (const pos of this.stemPositions) {
                     // Position the leaf at the end of the substem
-                    let leafPositionZ = 1.5; 
+                    this.petalYPos = this.yPosStem - this.length + this.radius;
                     
                     // Render leaf at the end of the substem
                     this.pushMatrix();
                     this.petalTextureTop.bind();
                     this.petalTextureBottom.bind();
-                    this.rotate(angle,0,1,0);
-                    this.translate(pos.x+3, this.petalYPos, pos.z + leafPositionZ);
-                    // this.rotate(this.leafCurvature1, 1, 0, 0);   // add soft rotation to the stem leaves
+                    this.translate(0, this.petalYPos, 0);
+                    this.rotate(angle,1,0,0);
+                    this.translate(0,0,3);
+                    // this.rotate(this.leafCurvature1, 0, 1, 0);   // add soft rotation to the stem leaves
                     this.rotate(Math.PI / 2, 1, 0, 0);
-                    this.scale(1.5, 1.5, 1.5);
+                    this.rotate(Math.PI / 4, 1,0,0);
+                    this.rotate(Math.PI / 2, 0,1,0);
+                    this.scale(1, 1, 1); 
                     this.petal1.display();
                     this.popMatrix();
                     
@@ -272,17 +276,58 @@ export class MyScene extends CGFscene {
                     this.pushMatrix();
                     this.petalTextureTop.bind();
                     this.petalTextureBottom.bind();
-                    this.rotate(angle,0,1,0);
-                    this.translate(pos.x+3, this.petalYPos, pos.z - leafPositionZ);
-                    // this.rotate(-this.leafCurvature2, 1, 0, 0);   // add soft rotation to the stem leaves
+                    this.translate(0, this.petalYPos, 0);
+                    this.rotate(angle,1,0,0);
+                    this.translate(0,0,3);
+                    // this.rotate(-this.leafCurvature2, 0, 1, 0);   // add soft rotation to the stem leaves
                     this.rotate(Math.PI, 0, 1, 0);
                     this.rotate(Math.PI / 2, 1, 0, 0);
-                    this.scale(1.5, 1.5, 1.5);
+                    this.rotate(Math.PI / 4, 1,0,0);
+                    this.rotate(Math.PI / 2, 0,1,0);
+                    this.scale(1, 1, 1); 
                     this.petal2.display();
                     this.popMatrix();
                 }
             }
         }
+
+        // if (this.displayPetals) {
+        //     this.petalYPos = this.receptacleYPos + this.radius/3;
+
+        //     for (let i = 0; i < this.numPetals; i++) {
+        //         let angle = i * this.angleIncrement;
+
+        //         for (const pos of this.stemPositions) {
+        //             // Position the leaf at the end of the substem
+        //             let leafPositionZ = 1.5; 
+                    
+        //             // Render leaf at the end of the substem
+        //             this.pushMatrix();
+        //             this.petalTextureTop.bind();
+        //             this.petalTextureBottom.bind();
+        //             this.rotate(angle,0,1,0);
+        //             this.translate(pos.x+3, this.petalYPos, pos.z + leafPositionZ);
+        //             // this.rotate(this.leafCurvature1, 1, 0, 0);   // add soft rotation to the stem leaves
+        //             this.rotate(Math.PI / 2, 1, 0, 0);
+        //             this.scale(1.5, 1.5, 1.5);
+        //             this.petal1.display();
+        //             this.popMatrix();
+                    
+        //             // Render leaf at the end of the substem
+        //             this.pushMatrix();
+        //             this.petalTextureTop.bind();
+        //             this.petalTextureBottom.bind();
+        //             this.rotate(angle,0,1,0);
+        //             this.translate(pos.x+3, this.petalYPos, pos.z - leafPositionZ);
+        //             // this.rotate(-this.leafCurvature2, 1, 0, 0);   // add soft rotation to the stem leaves
+        //             this.rotate(Math.PI, 0, 1, 0);
+        //             this.rotate(Math.PI / 2, 1, 0, 0);
+        //             this.scale(1.5, 1.5, 1.5);
+        //             this.petal2.display();
+        //             this.popMatrix();
+        //         }
+        //     }
+        // }
         
     
         
