@@ -1,10 +1,8 @@
 import { CGFobject } from "../lib/CGF.js";
 
 export class MyLeaf extends CGFobject {
-    constructor(scene, textureTop, textureBottom) {
+    constructor(scene) {
 		super(scene);
-        this.textureTop = textureTop;
-        this.textureBottom = textureBottom;
         // this.curvature = curvature
 		this.initBuffers();
 	}

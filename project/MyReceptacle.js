@@ -1,12 +1,11 @@
 import {CGFobject} from '../lib/CGF.js';
 
 export class MyReceptacle extends CGFobject {
-    constructor(scene, slices, stacks, radius, texture) {
+    constructor(scene, slices, stacks, radius) {
         super(scene);
         this.slices = slices;
         this.stacks = stacks;
         this.radius = radius;
-        this.texture = texture;
         this.initBuffers();
     }
     initBuffers() {

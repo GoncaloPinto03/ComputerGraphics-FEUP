@@ -6,14 +6,12 @@ import { CGFobject } from "../lib/CGF.js";
  * @param scene - Reference to MyScene object
  */
 export class MyStem extends CGFobject {
-    constructor(scene, slices, stacks, textureSide) {
+    constructor(scene, slices, stacks) {
         super(scene);
         this.slices = slices; // Number of slices
         this.stacks = stacks; // Number of stacks
-        this.textureSide = textureSide;
         this.initBuffers(); // Initialize buffers
     }
-    
     
     initBuffers() {
         this.vertices = [];
@@ -50,6 +48,7 @@ export class MyStem extends CGFobject {
                 this.indices.push(index3, index2, index4);
             }
         }
+        this.primitiveType = this.scene.gl.TRIANGLES;
 
         // Initialize WebGL buffers
         this.initGLBuffers();
