@@ -38,10 +38,10 @@ export class MyScene extends CGFscene {
 
         //Objects connected to MyInterface
         this.displayAxis = false;
-        // this.displayStem = true;
-        // this.displayLeafStem = true;
-        // this.displayReceptacle = true;
-        // this.displayPetals = true;
+        this.displayStem = true;
+        this.displayLeafStem = true;
+        this.displayReceptacle = true;
+        this.displayPetals = true;
         this.scaleFactor = 1;
 
         this.enableTextures(true);
