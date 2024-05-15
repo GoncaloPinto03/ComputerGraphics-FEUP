@@ -1,10 +1,18 @@
 import { CGFobject } from "../lib/CGF.js";
 
 export class MyPetal extends CGFobject {
-    constructor(scene) {
+    constructor(scene) {    // add rotation angle
 		super(scene);
+        this.maxValue = 12;
+        this.minValue = 4;
+        this.angle = Math.PI / Math.floor(this.minValue + Math.random() * (this.maxValue - this.minValue));
 		this.initBuffers();
 	}
+
+    getAngle() {
+        return this.angle;
+    }
+
 
     initBuffers() {
         this.vertices = [

@@ -6,14 +6,20 @@ import { CGFobject } from "../lib/CGF.js";
  * @param scene - Reference to MyScene object
  */
 export class MyStem extends CGFobject {
-    constructor(scene, slices, stacks, texture) {
+    constructor(scene, slices, stacks) {
         super(scene);
         this.slices = slices; // Number of slices
         this.stacks = stacks; // Number of stacks
-        // this.texture = texture;
+        this.maxValue = 0.5;
+        this.minValue = 0.2;
+        this.radius = this.minValue + Math.random() * (this.maxValue - this.minValue);
         this.initBuffers(); // Initialize buffers
     }
     
+    getRadius() {
+        return this.radius;
+    }
+
     initBuffers() {
         this.vertices = [];
         this.indices = [];

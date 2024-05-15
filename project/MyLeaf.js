@@ -3,9 +3,16 @@ import { CGFobject } from "../lib/CGF.js";
 export class MyLeaf extends CGFobject {
     constructor(scene) {
 		super(scene);
-        // this.curvature = curvature
+        this.maxValue = 8;
+        this.minValue = 5;
+        this.angle = Math.PI / (Math.floor(Math.random() * (this.maxValue - this.minValue + 1)) + this.maxValue);
+		this.initBuffers();
 		this.initBuffers();
 	}
+
+    getAngle() {
+        return this.angle;
+    }
 
     initBuffers() {
         this.vertices = [

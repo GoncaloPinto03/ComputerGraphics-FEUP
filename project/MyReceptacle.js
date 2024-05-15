@@ -1,13 +1,20 @@
 import {CGFobject} from '../lib/CGF.js';
 
 export class MyReceptacle extends CGFobject {
-    constructor(scene, slices, stacks, radius) {
+    constructor(scene, slices, stacks) {
         super(scene);
         this.slices = slices;
         this.stacks = stacks;
-        this.radius = radius;
+        this.maxValue = 2.5;
+        this.minValue = 1.5;
+        this.radius = this.minValue + Math.random() * (this.maxValue - this.minValue);
         this.initBuffers();
     }
+
+    getRadius() {
+        return this.radius;
+    }
+
     initBuffers() {
         this.vertices = [];
         this.indices = [];
