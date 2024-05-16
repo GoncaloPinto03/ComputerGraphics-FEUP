@@ -10,6 +10,8 @@ import { MyPlane } from "./MyPlane.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyBee } from "./MyBee.js";
 import { MyMovingBee } from "./MyMovingBee.js";
+import { MyPollen } from "./MyPollen.js";
+import { MyHive } from "./MyHive.js";
 
 /**
  * MyScene
@@ -40,6 +42,8 @@ export class MyScene extends CGFscene {
     this.plane = new MyPlane(this, 30);
     this.bee = new MyBee(this, 0, 0, 0);
     this.movingBee = new MyMovingBee(this, this.bee, 0, 0, 0);
+    this.pollen = new MyPollen(this, 50, 50, 5, 1.5, 1);
+    this.hive = new MyHive(this);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
@@ -66,6 +70,16 @@ export class MyScene extends CGFscene {
     this.panoramaAppearance.setTexture(this.panoramaTexture);
     this.panoramaAppearance.setEmission(1, 1, 1, 1);
     this.panoramaAppearance.setTextureWrap("REPEAT", "REPEAT");
+
+    this.pollenMaterial = new CGFappearance(this);
+    this.pollenMaterial.setAmbient(0.8, 0.8, 0.8, 0.0);
+    this.pollenMaterial.setDiffuse(0.95, 0.95, 0.95, 0.0);
+    this.pollenMaterial.setSpecular(0.5, 0.5, 0.5, 0.0);
+    this.pollenMaterial.setTexture(
+      new CGFtexture(this, "./images/pollen.jpg")
+    );
+    this.pollenMaterial.setTextureWrap("REPEAT", "REPEAT");
+    
 
     this.panorama = new MyPanorama(this, this.panoramaAppearance);
   }
@@ -162,9 +176,20 @@ export class MyScene extends CGFscene {
     this.panorama.display();
     this.popMatrix();
 
+    // this.pushMatrix();
+    // this.movingBee.display();
+    // this.movingBee.update((this.speedFactor));
+    // this.popMatrix();
+
+    // this.pushMatrix();
+    // this.translate(10, 0, 10);
+    // this.pollenMaterial.apply();
+    // this.pollen.display();
+    // this.popMatrix();
+
     this.pushMatrix();
-    this.movingBee.display();
-    this.movingBee.update((this.speedFactor));
+    this.translate(0, -10, 0);
+    this.hive.display();
     this.popMatrix();
 
     // ---- END Primitive drawing section
