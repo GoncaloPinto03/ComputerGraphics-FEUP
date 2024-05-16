@@ -1,7 +1,7 @@
 import { CGFobject } from "../lib/CGF.js";
 
 export class MyPetal extends CGFobject {
-    constructor(scene) {    // add rotation angle
+    constructor(scene) {    
 		super(scene);
         this.maxValue = 12;
         this.minValue = 4;

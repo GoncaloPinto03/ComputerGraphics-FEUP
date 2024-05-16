@@ -1,11 +1,8 @@
 import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFshader, CGFtexture } from "../lib/CGF.js";
 import { MyPlane } from "./MyPlane.js";
 import { MySphere } from "./MySphere.js";
-import { MyStem } from "./MyStem.js";
 import { MyPanorama } from "./MyPanorama.js";
-import { MyLeaf } from "./MyLeaf.js";
-import { MyReceptacle } from "./MyReceptacle.js";
-import { MyPetal } from "./MyPetal.js";
+import { MyGarden } from "./MyGarden.js";
 import { MyFlower } from "./MyFlower.js";
 
 /**
@@ -34,7 +31,9 @@ export class MyScene extends CGFscene {
         //Initialize scene objects
         this.axis = new CGFaxis(this);
         this.plane = new MyPlane(this, 30);
-        this.flower = new MyFlower(this);
+        this.garden = new MyGarden(this);
+        // this.flower1 = new MyFlower(this);
+        // this.flower2 = new MyFlower(this);
 
         //Objects connected to MyInterface
         this.displayAxis = false;
@@ -53,7 +52,7 @@ export class MyScene extends CGFscene {
         this.terrainAppearance.setTextureWrap('REPEAT', 'REPEAT');
 
         // panorama texture
-        this.panoramaTexture = new CGFtexture(this, "images/panorama5.png");
+        this.panoramaTexture = new CGFtexture(this, "images/panorama1.jpg");
         this.panoramaAppearance = new CGFappearance(this);
         this.panoramaAppearance.setTexture(this.panoramaTexture);
         this.panoramaAppearance.setEmission(1, 1, 1, 1);
@@ -112,9 +111,18 @@ export class MyScene extends CGFscene {
         this.panorama.display();
         this.popMatrix();
 
-        this.pushMatrix();
-        this.flower.display();
-        this.popMatrix();
+        // this.pushMatrix();
+        // this.translate(0,0,10);
+        // this.flower1.display();
+        // this.popMatrix();
+
+        // this.pushMatrix();
+        // this.flower2.display();
+        // this.popMatrix();
+        
+        // this.pushMatrix();
+        this.garden.display();
+        // this.popMatrix();
   
         // ---- END Primitive drawing section
     }

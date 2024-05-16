@@ -1,9 +1,8 @@
-import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFshader, CGFtexture, CGFobject } from "../lib/CGF.js";
+import { CGFtexture, CGFobject } from "../lib/CGF.js";
 import { MyStem } from "./MyStem.js";
 import { MyLeaf } from "./MyLeaf.js";
 import { MyReceptacle } from "./MyReceptacle.js";
 import { MyPetal } from "./MyPetal.js";
-import { MyPlane } from "./MyPlane.js";
 
 
 /**
@@ -17,19 +16,17 @@ export class MyFlower extends CGFobject {
 
     this.stemPositions = [];
     // this.auxStemPositions = [];
-    this.nrStems = Math.floor(Math.random() * 4) + 1; // random number of stems
+    this.nrStems = Math.floor(1 + Math.random() * (5 - 1)); // random number of stems
     this.length;
 
+    // stem
     // initial yPos for the first stem
     // need to adjust this value later (ex: -95)
-    console.log("nrStems: " + this.nrStems);
-    // this.auxStemRadius = 0.05 + Math.random() * (0.2 - 0.05);
-    // stem texture
-    this.yPosStem = 0;
+    this.yPosStem = -15;
     this.stemTextureSide = new CGFtexture(this.scene, "images/stemColor.png");
     this.stem = new MyStem(this.scene, 100, 20);
     this.stemRadius = this.stem.getRadius();
-    console.log("stemRadius " + this.stemRadius);
+    // this.auxStemRadius = 0.05 + Math.random() * (0.2 - 0.05);
 
     // handle stem position
     for (let i = 0; i < this.nrStems; i++) {
@@ -37,8 +34,8 @@ export class MyFlower extends CGFobject {
       let maxLength = 5.0; // Maximum length for a substem
       this.length = minLength + Math.random() * (maxLength - minLength);
 
-      console.log("yPos: " + this.yPosStem);
-      console.log("len: " + this.length);
+      // console.log("yPos: " + this.yPosStem);
+      // console.log("len: " + this.length);
       this.stemPositions.push({
         x: 0,
         y: this.yPosStem,
@@ -57,8 +54,7 @@ export class MyFlower extends CGFobject {
     // let maxAuxLength = 2.0; // Maximum length for a substem
     // this.auxLength = minAuxLength + Math.random() * (maxAuxLength - minAuxLength);
 
-    // stemLeaf texture
-    // update this stuff and everything related to MyPetal
+    // stem leaves
     this.leafStemTextureTop = new CGFtexture(this.scene, "images/leafColor.png");
     this.leafStemTextureBottom = new CGFtexture(this.scene, "images/leafColor.png");
     this.leafRandomValue = Math.random();
@@ -67,7 +63,7 @@ export class MyFlower extends CGFobject {
     this.leafStem1Angle = this.leafStem1.getAngle();
     this.leafStem2Angle = this.leafStem2.getAngle();
 
-    // receptacle texture
+    // receptacle 
     this.receptacleYPos;
     this.receptacleTexture = new CGFtexture(this.scene, "images/receptacleColor.png");
     this.receptacle = new MyReceptacle(this.scene, 1000, 10);
