@@ -131,6 +131,7 @@ export class MyScene extends CGFscene {
     this.checkKeys();
     this.movingBee.update((this.speedFactor));
     this.movingBee.speedFactor = this.speedFactor;
+    this.movingBee.scaleFactor = this.scaleFactor;
   }
   display() {
     // ---- BEGIN Background, camera and axis setup
