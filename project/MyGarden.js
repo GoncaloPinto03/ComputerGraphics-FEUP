@@ -2,10 +2,10 @@ import { CGFobject } from "../lib/CGF.js";
 import { MyFlower } from "./MyFlower.js";
 
 export class MyGarden extends CGFobject {
-    constructor(scene) {    
+    constructor(scene, rows, cols) {    
 		super(scene);
-        this.rows = 5;
-        this.cols = 5;
+        this.rows = rows;
+        this.cols = cols;
         this.flowers = [];
 
         // Initialize flowers
@@ -22,11 +22,10 @@ export class MyGarden extends CGFobject {
         const spacingZ = 20;
 
         for (let i = 0; i < this.rows; i++) {
-            for (let j = 0; j < this.cols; j++) {
-                this.flower = new MyFlower(this.scene);
-                
+            for (let j = 0; j < this.cols; j++) {                
                 this.scene.pushMatrix();
                 this.scene.translate(i * spacingX, 0, j * spacingZ);
+                // this.scene.rotate(Math.PI/4, 0,1,0);
                 this.flowers[i][j].display();
                 this.scene.popMatrix();
             }

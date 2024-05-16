@@ -3,7 +3,6 @@ import { MyPlane } from "./MyPlane.js";
 import { MySphere } from "./MySphere.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyGarden } from "./MyGarden.js";
-import { MyFlower } from "./MyFlower.js";
 
 /**
  * MyScene
@@ -31,9 +30,11 @@ export class MyScene extends CGFscene {
         //Initialize scene objects
         this.axis = new CGFaxis(this);
         this.plane = new MyPlane(this, 30);
-        this.garden = new MyGarden(this);
-        // this.flower1 = new MyFlower(this);
-        // this.flower2 = new MyFlower(this);
+
+        // Default garden dimensions
+        this.gardenRows = 5;
+        this.gardenCols = 5;
+        this.garden = new MyGarden(this, this.gardenRows, this.gardenCols);
 
         //Objects connected to MyInterface
         this.displayAxis = false;
@@ -82,6 +83,12 @@ export class MyScene extends CGFscene {
         this.setShininess(10.0);
     }
 
+    setGardenDimensions(rows, cols) {
+        this.gardenRows = rows;
+        this.gardenCols = cols;
+        this.garden = new MyGarden(this, this.rows, this.cols);
+    }
+
     display() {
         // ---- BEGIN Background, camera and axis setup
         // Clear image and depth buffer everytime we update the scene
@@ -110,19 +117,10 @@ export class MyScene extends CGFscene {
         this.panoramaAppearance.apply();
         this.panorama.display();
         this.popMatrix();
-
-        // this.pushMatrix();
-        // this.translate(0,0,10);
-        // this.flower1.display();
-        // this.popMatrix();
-
-        // this.pushMatrix();
-        // this.flower2.display();
-        // this.popMatrix();
         
-        // this.pushMatrix();
+        this.pushMatrix();
         this.garden.display();
-        // this.popMatrix();
+        this.popMatrix();
   
         // ---- END Primitive drawing section
     }

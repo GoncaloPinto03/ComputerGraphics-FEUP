@@ -6,7 +6,7 @@ export class MyReceptacle extends CGFobject {
         this.slices = slices;
         this.stacks = stacks;
         this.maxValue = 2.5;
-        this.minValue = 1.5;
+        this.minValue = 1;
         this.radius = this.minValue + Math.random() * (this.maxValue - this.minValue);
         this.initBuffers();
     }

@@ -20,9 +20,7 @@ export class MyFlower extends CGFobject {
     this.length;
 
     // stem
-    // initial yPos for the first stem
-    // need to adjust this value later (ex: -95)
-    this.yPosStem = -15;
+    this.yPosStem = -15;        // initial yPos for the first stem
     this.stemTextureSide = new CGFtexture(this.scene, "images/stemColor.png");
     this.stem = new MyStem(this.scene, 100, 20);
     this.stemRadius = this.stem.getRadius();
@@ -34,8 +32,6 @@ export class MyFlower extends CGFobject {
       let maxLength = 5.0; // Maximum length for a substem
       this.length = minLength + Math.random() * (maxLength - minLength);
 
-      // console.log("yPos: " + this.yPosStem);
-      // console.log("len: " + this.length);
       this.stemPositions.push({
         x: 0,
         y: this.yPosStem,
@@ -148,15 +144,15 @@ export class MyFlower extends CGFobject {
         this.leafStem2.display();
         this.scene.popMatrix();
 
-        // aux stem display
-        this.scene.pushMatrix();
-        this.stemTextureSide.bind();
-        this.scene.rotate(k * Math.PI/12,1,0,0);
-        this.scene.translate(pos.x, pos.y+this.auxLength, pos.z);
-        this.scene.rotate(Math.PI / 2, 1, 0, 0);
-        this.scene.scale(this.auxStemRadius, this.auxStemRadius, this.auxLength);
+        // // aux stem display
+        // this.scene.pushMatrix();
+        // this.stemTextureSide.bind();
+        // this.scene.rotate(k * Math.PI/12,1,0,0);
+        // this.scene.translate(pos.x, pos.y+this.auxLength, pos.z);
+        // this.scene.rotate(Math.PI / 2, 1, 0, 0);
+        // this.scene.scale(this.auxStemRadius, this.auxStemRadius, this.auxLength);
         // this.auxStem.display();
-        this.scene.popMatrix();
+        // this.scene.popMatrix();
       }
       i++;
     }
