@@ -5,18 +5,10 @@ import { MyCylinder } from "./MyCylinder.js";
 import { MyAntennae } from "./MyAntennae.js";
 
 export class MyBee extends CGFobject {
-  constructor(scene, x, y, z) {
+  constructor(scene) {
     super(scene);
 
-    this.x = x;
-    this.y = y;
-    this.z = z;
-    this.orientation = 0;
-    this.speed = 0;
     this.elapsedTime = 0;
-
-    this.turnLeft = false;
-    this.turnRight = false;
 
     // Objects
     this.head = new MySphere(this.scene, 16, 8, 5, false);
@@ -38,7 +30,6 @@ export class MyBee extends CGFobject {
     this.wing3 = new MySphere(this.scene, 16, 8, 2, false);
     this.wing4 = new MySphere(this.scene, 16, 8, 2, false);
 
-    // Materials
     this.initMaterials();
   }
   initMaterials() {
@@ -100,52 +91,24 @@ export class MyBee extends CGFobject {
     this.wingMaterial.setShininess(10.0);
   }
 
-  turn(angle) {
-    this.orientation += angle;
+  update(t) {
+    //Update elapsedTime for animations
+    this.elapsedTime += t / 1000.0;
 
-    if (angle > 0) this.turnRight = true;
-    else this.turnLeft = true;
+    var dirVector = [
+      Math.sin(this.orientation),
+      this.y,
+      Math.cos(this.orientation),
+    ];
+    this.speedFactor = t;
+
+    this.x += this.speed * dirVector[0] * t;
+    this.z += this.speed * dirVector[2] * t;
   }
-
-  stopTurning() {
-    this.turnLeft = false;
-    this.turnRight = false;
-  }
-
-  accelerate(val) {
-    if (this.speed + val < 0) {
-      this.speed = 0;
-      this.scene.speedFactor = 1;
-    } else {
-      this.speed += val;
-    }
-  }
-
-  update(delta_t) {
-    // Update elapsedTime for animations
-    this.elapsedTime += delta_t / 1000.0;
-
-    // Update position based on speed and orientation
-    let deltaX = Math.cos(this.orientation) * this.speed * (delta_t / 1000.0);
-    let deltaY = 0; // Assuming bee doesn't move vertically
-    let deltaZ = Math.sin(this.orientation) * this.speed * (delta_t / 1000.0);
-
-    this.x += deltaX;
-    this.y += deltaY;
-    this.z += deltaZ;
-  }
-
-  reset(x, y, z) {
-    this.speed = 0;
-    this.orientation = 0;
-    this.x = x;
-    this.y = y;
-    this.z = z;
-    this.turnLeft = false;
-    this.turnRight = false;
-}
 
   display() {
+
+    this.update(50);
     this.scene.translate(0, Math.sin(this.elapsedTime) * 0.5, 0);
 
     // Head

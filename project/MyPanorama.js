@@ -8,7 +8,7 @@ import { MySphere } from "./MySphere.js";
 export class MyPanorama extends CGFobject {
     constructor(scene, texture) {
         super(scene);
-        this.sphere = new MySphere(this.scene, 100, 100, 200, true)
+        this.sphere = new MySphere(this.scene, 100, 100, 500, true)
         this.texture = texture;
     }
 

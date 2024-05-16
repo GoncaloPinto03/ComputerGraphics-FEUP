@@ -9,6 +9,7 @@ import {
 import { MyPlane } from "./MyPlane.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyBee } from "./MyBee.js";
+import { MyMovingBee } from "./MyMovingBee.js";
 
 /**
  * MyScene
@@ -32,14 +33,18 @@ export class MyScene extends CGFscene {
     this.gl.enable(this.gl.CULL_FACE);
     this.gl.depthFunc(this.gl.LEQUAL);
 
+    this.setUpdatePeriod(50);
+
     //Initialize scene objects
     this.axis = new CGFaxis(this);
     this.plane = new MyPlane(this, 30);
     this.bee = new MyBee(this, 0, 0, 0);
+    this.movingBee = new MyMovingBee(this, this.bee, 0, 0, 0);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
     this.scaleFactor = 1;
+    this.speedFactor = 1;
 
     this.enableTextures(true);
 
@@ -86,45 +91,46 @@ export class MyScene extends CGFscene {
     this.setShininess(10.0);
   }
   checkKeys() {
-    var text = "Keys pressed: ";
-    var keysPressed = false;
+    var text= "Keys pressed: ";
+    var keysPressed= false;
 
     // Check for key codes e.g. in https://keycode.info/
     if (this.gui.isKeyPressed("KeyW")) {
       text += " W ";
       keysPressed = true;
-      this.bee.accelerate(0.1);
+      this.movingBee.accelerate(this.speedFactor);
     }
 
     if (this.gui.isKeyPressed("KeyS")) {
       text += " S ";
       keysPressed = true;
-      this.bee.accelerate(-0.1);
+      this.movingBee.accelerate(0);
     }
 
     if (this.gui.isKeyPressed("KeyA")) {
       text += " A ";
       keysPressed = true;
-      this.bee.turn(0.1);
+      this.movingBee.turn(this.speedFactor);
     }
 
     if (this.gui.isKeyPressed("KeyD")) {
       text += " D ";
       keysPressed = true;
-      this.bee.turn(0.1);
+      this.movingBee.turn(-this.speedFactor);
     }
 
     if (this.gui.isKeyPressed("KeyR")) {
       text += " R ";
       keysPressed = true;
-      this.bee.reset()
-  }
+      this.movingBee.reset();
+    }
 
     if (keysPressed) console.log(text);
   }
   update() {
     this.checkKeys();
-    //this.bee.update(100);
+    this.movingBee.update((this.speedFactor));
+    this.movingBee.speedFactor = this.speedFactor;
   }
   display() {
     // ---- BEGIN Background, camera and axis setup
@@ -142,8 +148,6 @@ export class MyScene extends CGFscene {
 
     // ---- BEGIN Primitive drawing section
 
-    this.update();
-
     this.pushMatrix();
     this.terrainAppearance.apply();
     this.translate(0, -100, 0);
@@ -158,8 +162,8 @@ export class MyScene extends CGFscene {
     this.popMatrix();
 
     this.pushMatrix();
-    this.bee.display();
-    this.bee.update(100);
+    this.movingBee.display();
+    this.movingBee.update((this.speedFactor));
     this.popMatrix();
 
     // ---- END Primitive drawing section
