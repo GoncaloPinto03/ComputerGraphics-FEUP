@@ -1,6 +1,5 @@
 import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFshader, CGFtexture } from "../lib/CGF.js";
 import { MyPlane } from "./MyPlane.js";
-import { MySphere } from "./MySphere.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyGarden } from "./MyGarden.js";
 
@@ -11,6 +10,9 @@ import { MyGarden } from "./MyGarden.js";
 export class MyScene extends CGFscene {
     constructor() {
         super();
+        // Default garden dimensions
+        this.gardenRows = 5;
+        this.gardenCols = 5;
     }
 
     init(application) {
@@ -31,17 +33,10 @@ export class MyScene extends CGFscene {
         this.axis = new CGFaxis(this);
         this.plane = new MyPlane(this, 30);
 
-        // Default garden dimensions
-        this.gardenRows = 5;
-        this.gardenCols = 5;
+        // initialize garden
         this.garden = new MyGarden(this, this.gardenRows, this.gardenCols);
 
         //Objects connected to MyInterface
-        this.displayAxis = false;
-        this.displayStem = true;
-        this.displayLeafStem = true;
-        this.displayReceptacle = true;
-        this.displayPetals = true;
         this.scaleFactor = 1;
 
         this.enableTextures(true);
@@ -53,7 +48,7 @@ export class MyScene extends CGFscene {
         this.terrainAppearance.setTextureWrap('REPEAT', 'REPEAT');
 
         // panorama texture
-        this.panoramaTexture = new CGFtexture(this, "images/panorama1.jpg");
+        this.panoramaTexture = new CGFtexture(this, "images/panorama4.jpg");
         this.panoramaAppearance = new CGFappearance(this);
         this.panoramaAppearance.setTexture(this.panoramaTexture);
         this.panoramaAppearance.setEmission(1, 1, 1, 1);
@@ -83,10 +78,8 @@ export class MyScene extends CGFscene {
         this.setShininess(10.0);
     }
 
-    setGardenDimensions(rows, cols) {
-        this.gardenRows = rows;
-        this.gardenCols = cols;
-        this.garden = new MyGarden(this, this.rows, this.cols);
+    setGardenDimensions() {
+        this.garden.updateSize(this.gardenRows, this.gardenCols);
     }
 
     display() {
@@ -100,6 +93,27 @@ export class MyScene extends CGFscene {
         // Apply transformations corresponding to the camera position relative to the origin
         this.applyViewMatrix();
 
+        var sca = [
+            this.scaleFactor,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            this.scaleFactor,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            this.scaleFactor,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+          ];
+      
+        this.multMatrix(sca);
+      
         // Draw axis
         if (this.displayAxis) this.axis.display();
 

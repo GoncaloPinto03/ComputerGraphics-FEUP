@@ -15,17 +15,12 @@ export class MyInterface extends CGFinterface {
         
         // init GUI. For more information on the methods, check:
         // https://github.com/dataarts/dat.gui/blob/master/API.md
-        this.gui = new dat.GUI();
-
-        //Checkbox element in GUI
-        this.gui.add(this.scene, 'displayAxis').name('Axis');
-        this.gui.add(this.scene, 'displayStem').name('Stem');
-        this.gui.add(this.scene, 'displayLeafStem').name('Leaf Stem');
-        this.gui.add(this.scene, 'displayReceptacle').name('Receptacle');
-        this.gui.add(this.scene, 'displayPetals').name('Petal');
+        this.gui = new dat.GUI();    
 
         //Slider element in GUI
         this.gui.add(this.scene, 'scaleFactor', 0.1, 5).name('Scale Factor');
+        this.gui.add(this.scene, 'gardenRows', 1, 10).name('Garden Rows').step(1).onChange(this.scene.setGardenDimensions.bind(this.scene));
+        this.gui.add(this.scene, 'gardenCols', 1, 10).name('Garden Cols').step(1).onChange(this.scene.setGardenDimensions.bind(this.scene));
 
         return true;
     }
