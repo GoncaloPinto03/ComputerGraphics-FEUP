@@ -4,6 +4,8 @@ import { MyPanorama } from "./MyPanorama.js";
 import { MyGarden } from "./MyGarden.js";
 import { MyRock } from "./MyRock.js";
 import { MyRockSet } from "./MyRockSet.js";
+import { MyBee } from "./MyBee.js";
+import { MyMovingBee } from "./MyMovingBee.js";
 
 /**
  * MyScene
@@ -31,16 +33,21 @@ export class MyScene extends CGFscene {
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.depthFunc(this.gl.LEQUAL);
 
+        this.setUpdatePeriod(50);
+
         //Initialize scene objects
         this.axis = new CGFaxis(this);
         this.plane = new MyPlane(this, 30);
         this.rockSet = new MyRockSet(this);
-        
-        // initialize garden
+        this.bee = new MyBee(this, 0, 0, 0);
+        this.movingBee = new MyMovingBee(this, this.bee, 0, 0, 0);
         this.garden = new MyGarden(this, this.gardenRows, this.gardenCols);
 
         //Objects connected to MyInterface
+        this.displayAxis = true;
         this.scaleFactor = 1;
+        this.beeScaleFactor = 1;
+        this.beeSpeedFactor = 1;
 
         this.enableTextures(true);
 
@@ -113,11 +120,53 @@ export class MyScene extends CGFscene {
         this.setShininess(10.0);
     }
 
-
-
     setGardenDimensions() {
         this.garden.updateSize(this.gardenRows, this.gardenCols);
     }
+
+    checkKeys() {
+      var text= "Keys pressed: ";
+      var keysPressed= false;
+  
+      // Check for key codes e.g. in https://keycode.info/
+      if (this.gui.isKeyPressed("KeyW")) {
+        text += " W ";
+        keysPressed = true;
+        this.movingBee.accelerate(this.beeSpeedFactor);
+      }
+  
+      if (this.gui.isKeyPressed("KeyS")) {
+        text += " S ";
+        keysPressed = true;
+        this.movingBee.accelerate(0);
+      }
+  
+      if (this.gui.isKeyPressed("KeyA")) {
+        text += " A ";
+        keysPressed = true;
+        this.movingBee.turn(this.beeSpeedFactor);
+      }
+  
+      if (this.gui.isKeyPressed("KeyD")) {
+        text += " D ";
+        keysPressed = true;
+        this.movingBee.turn(-this.beeSpeedFactor);
+      }
+  
+      if (this.gui.isKeyPressed("KeyR")) {
+        text += " R ";
+        keysPressed = true;
+        this.movingBee.reset();
+      }
+  
+      if (keysPressed) console.log(text);
+    }
+    update() {
+      this.checkKeys();
+      this.movingBee.update((this.beeSpeedFactor));
+      this.movingBee.beeSpeedFactor = this.beeSpeedFactor;
+      this.movingBee.beeScaleFactor = this.beeScaleFactor;
+    }  
 
     display() {
         // ---- BEGIN Background, camera and axis setup
@@ -179,6 +228,13 @@ export class MyScene extends CGFscene {
         this.scale(2.5, 2, 2);
         this.rockAppearance.apply();
         this.rockSet.display();
+        this.popMatrix();
+
+        this.pushMatrix();
+        this.translate(60, -70, 70);
+        this.scale(0.3, 0.3, 0.3);
+        this.movingBee.display();
+        this.movingBee.update((this.beeSpeedFactor));
         this.popMatrix();
   
         // ---- END Primitive drawing section
