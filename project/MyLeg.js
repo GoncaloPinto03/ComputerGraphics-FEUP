@@ -6,9 +6,9 @@ export class MyLeg extends CGFobject {
         super(scene);
 
         // Objects
-        this.leg1 = new MySphere(this.scene, 16, 8, 2, true);
-        this.leg2 = new MySphere(this.scene, 16, 8, 2, true);
-        this.finger = new MySphere(this.scene, 16, 8, 2, true);
+        this.leg1 = new MySphere(this.scene, 16, 8, 2, false);
+        this.leg2 = new MySphere(this.scene, 16, 8, 2, false);
+        this.finger = new MySphere(this.scene, 16, 8, 2, false);
 
         // Materials
         this.initMaterials();
