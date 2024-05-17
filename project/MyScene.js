@@ -124,8 +124,8 @@ export class MyScene extends CGFscene {
             1.5,
             0.1,
             1000,
-            vec3.fromValues(0, -55, 45), //where the camera is
-            vec3.fromValues(20,-70.3,50) //the target
+            vec3.fromValues(0, -50, 40), //where the camera is
+            vec3.fromValues(40,-60, 30) //the target
         );
     }
     setDefaultAppearance() {
@@ -239,8 +239,8 @@ export class MyScene extends CGFscene {
         this.popMatrix();
 
         this.pushMatrix();
-        this.translate(30, -99, -30);
-        this.scale(2.5, 2, 2);
+        this.translate(36, -99, -25);
+        this.scale(3, 1.5, 3);
         this.rockAppearance.apply();
         this.rockSet.display();
         this.popMatrix();
@@ -253,14 +253,15 @@ export class MyScene extends CGFscene {
         this.popMatrix();
 
         this.pushMatrix();
-        this.translate(20, 0, 10);
+        this.translate(0, -50, 0);
         this.pollenMaterial.apply();
         this.pollen.display();
         this.popMatrix();
 
         this.pushMatrix();
         this.rotate(-Math.PI/2, 0, 1, 0);
-        this.translate(0, -90, 0);
+        this.translate(-10, -81, -65);
+        this.scale(1.5, 1.5, 1.5);
         this.hive.display();
         this.popMatrix();
 

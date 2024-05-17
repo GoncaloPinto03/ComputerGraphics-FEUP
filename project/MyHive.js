@@ -250,7 +250,7 @@ export class MyHive extends CGFobject {
       // Cover
 
       this.scene.pushMatrix();
-      this.scene.translate(0, -10, 9);
+      this.scene.translate(0, -15, 9);
       this.scene.rotate(-5*Math.PI/12, 1, 0, 0);
       this.cover.display();
       this.scene.popMatrix();
