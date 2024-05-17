@@ -71,15 +71,21 @@ export class MyFlower extends CGFobject {
     // this.auxLength = minAuxLength + Math.random() * (maxAuxLength - minAuxLength);
 
     // stem leaves
-    this.leavesTextures = [
-      new CGFtexture(this.scene, "images/leafColor.png"),
-      new CGFtexture(this.scene, "images/leafColor.png")
+    this.textures = [
+      new CGFtexture(this.scene, "images/blue.png"),
+      new CGFtexture(this.scene, "images/lightBlue.png"),
+      new CGFtexture(this.scene, "images/darkGreen.png"),
+      new CGFtexture(this.scene, "images/green.png"),
+      new CGFtexture(this.scene, "images/orange.png"),
+      new CGFtexture(this.scene, "images/red.png"),
+      new CGFtexture(this.scene, "images/yellow.png")
     ];
+
     this.leafRandomValue = Math.random();
     this.leafStem1 = new MyLeaf(this.scene);
     this.leafStem2 = new MyLeaf(this.scene);
     this.leafAppearance = new CGFappearance(this.scene);
-    this.leafAppearance.setTexture(this.getRandomTexture(this.leavesTextures));
+    this.leafAppearance.setTexture(this.getRandomTexture(this.textures));
     this.leafAppearance.setTextureWrap('REPEAT', 'REPEAT');
     this.leafStem1Angle = this.leafStem1.getAngle();
     this.leafStem2Angle = this.leafStem2.getAngle();
@@ -93,11 +99,6 @@ export class MyFlower extends CGFobject {
     this.receptacleAppearance.setTextureWrap('REPEAT', 'REPEAT');
     this.receptacleRadius = this.receptacle.getRadius();
 
-    // petals
-    this.petalsTextures = [
-      new CGFtexture(this.scene, "images/petalColor.png"),
-      new CGFtexture(this.scene, "images/petalColor.png")
-    ];
     this.petalYPos;
     this.numPetals = Math.floor(6 + Math.random() * (10 - 6));
     this.angleIncrement = (2 * Math.PI) / this.numPetals;
@@ -105,7 +106,7 @@ export class MyFlower extends CGFobject {
     this.petal1 = new MyPetal(this.scene);
     this.petal2 = new MyPetal(this.scene);
     this.petalAppearance = new CGFappearance(this.scene);
-    this.petalAppearance.setTexture(this.getRandomTexture(this.petalsTextures));
+    this.petalAppearance.setTexture(this.getRandomTexture(this.textures));
     this.petalAppearance.setTextureWrap('REPEAT', 'REPEAT');
   }
 

@@ -1,4 +1,4 @@
-import { CGFobject } from "../lib/CGF.js";
+import { CGFobject, CGFtexture, CGFappearance } from "../lib/CGF.js";
 import { MyGrassPortion } from "./MyGrassPortion.js";
 
 export class MyGrassPatch extends CGFobject {
@@ -14,6 +14,11 @@ export class MyGrassPatch extends CGFobject {
     }
 
     initGrass() {
+        this.grassTexture = new CGFtexture(this.scene, "images/grassColor.png");
+        this.grassAppearance = new CGFappearance(this.scene);
+        this.grassAppearance.setTexture(this.grassTexture);
+        this.grassAppearance.setTextureWrap('REPEAT', 'REPEAT');
+
         for (let i = 0; i < this.numPortions; i++) {
             let portion = new MyGrassPortion(this.scene);
             // Randomize position and slight rotation
@@ -28,6 +33,7 @@ export class MyGrassPatch extends CGFobject {
     display() {
         for (let portion of this.grassPortions) {
             this.scene.pushMatrix();
+            this.grassAppearance.apply();
             this.scene.translate(portion.x, portion.y, portion.z);
             this.scene.rotate(portion.angle, 0, 1, 0);
 
