@@ -2,11 +2,13 @@ import { CGFobject } from "../lib/CGF.js";
 import { MyGrassPortion } from "./MyGrassPortion.js";
 
 export class MyGrassPatch extends CGFobject {
-    constructor(scene, width, depth, numPortions) {    
+    constructor(scene, width, depth, numPortions, minHeight = 1, maxHeight = 2) {    
         super(scene);
         this.width = width;
         this.depth = depth;
         this.numPortions = numPortions;
+        this.minHeight = minHeight;
+        this.maxHeight = maxHeight;
         this.grassPortions = [];
         this.initGrass();
     }
@@ -30,7 +32,7 @@ export class MyGrassPatch extends CGFobject {
             this.scene.rotate(portion.angle, 0, 1, 0);
 
             // Apply wind effect
-            let sway = Math.sin(Date.now() * 0.001 + portion.x + portion.z) * 0.1;
+            let sway = Math.sin(Date.now() * 0.005 + portion.x + portion.z) * 0.1;
             this.scene.rotate(sway, 0, 0, 1);
             portion.display();
             this.scene.popMatrix();

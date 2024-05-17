@@ -1,8 +1,9 @@
 import { CGFobject } from "../lib/CGF.js";
 
 export class MyGrassPortion extends CGFobject {
-    constructor(scene) {    
+    constructor(scene, height = 2) {    
 		super(scene);
+        this.height = height;
 		this.initBuffers();
 	}
 
@@ -11,7 +12,7 @@ export class MyGrassPortion extends CGFobject {
         this.vertices = [
             -0.05, 0, 0,   // Bottom left
             0.05, 0, 0,    // Bottom right
-            0, 1, 0,       // Top center
+            0, this.height, 0,       // Top center
         ];
 
         this.indices = [

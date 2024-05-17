@@ -36,7 +36,7 @@ export class MyScene extends CGFscene {
 
         // initialize garden
         this.garden = new MyGarden(this, this.gardenRows, this.gardenCols);
-        this.grassPatch = new MyGrassPatch(this, 50, 50, 15000); // 50x50 units with 1000 blades
+        this.grassPatch = new MyGrassPatch(this, 100, 100, 25000, 1, 2); // change this to 50x50 units
 
         //Objects connected to MyInterface
         this.scaleFactor = 1;

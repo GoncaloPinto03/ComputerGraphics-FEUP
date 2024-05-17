@@ -47,15 +47,15 @@ export class MyFlower extends CGFobject {
     // stems that come out of the main stem
     this.stems = [];
     let lastRingVertices = null;
-    
+
+    // this will be the stemRadius value of the last generated flower
+    this.stemRadius;  
+
     for (let i = 0; i < this.nrStems; i++) {
       let stem = new MyStem(this.scene, 100, 20, lastRingVertices);
-      let stemRadius = stem.getRadius();
+      this.stemRadius = stem.getRadius();
 
-      this.stems.push({ 
-        stem: stem, 
-        stemRadius: stemRadius,
-      });
+      this.stems.push(stem);
       
       lastRingVertices = stem.getLastRingVertices();
     }
@@ -133,14 +133,15 @@ export class MyFlower extends CGFobject {
     // stem display
     for (let j = 0; j < this.nrStems; j++) {
       const pos = this.stemPositions[j];
-      let k = i % 2 == 1 ? 1 : -1;
+      // let k = i % 2 == 1 ? 1 : -1;
+      
       this.scene.pushMatrix();
       this.stemAppearance.apply();
       this.scene.translate(pos.x, pos.y, pos.z);
       // this.scene.rotate(k * Math.PI/36,1,0,0);
       this.scene.rotate(Math.PI / 2, 1, 0, 0);
-      this.scene.scale(this.stems[j].stemRadius, this.stems[j].stemRadius, 5);
-      this.stems[j].stem.display();
+      this.scene.scale(this.stemRadius, this.stemRadius, 5);
+      this.stems[j].display();
       this.scene.popMatrix();
 
       if (this.leafRandomValue >= 0.5) {
