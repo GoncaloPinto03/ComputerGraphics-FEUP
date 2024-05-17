@@ -1,11 +1,14 @@
 import { CGFobject } from '../lib/CGF.js';
 
 export class MyRock extends CGFobject {
-    constructor(scene, slices, stacks, radius) {
+    constructor(scene, slices, stacks, radius, noiseFactorX, noiseFactorY, noiseFactorZ) {
         super(scene);
         this.slices = slices;
         this.stacks = stacks;
         this.radius = radius;
+        this.noiseFactorX = noiseFactorX;
+        this.noiseFactorY = noiseFactorY;
+        this.noiseFactorZ = noiseFactorZ;
         this.initBuffers();
     }
 
@@ -24,13 +27,12 @@ export class MyRock extends CGFobject {
                 const y = this.radius * Math.cos(beta * latitude);
                 const z = this.radius * Math.sin(longitude * alpha) * Math.sin(beta * latitude);
 
-                // Randomly displace vertices to create irregularities
-                const noiseFactor = 0.2; // Adjust as needed
-                const noiseX = (Math.random() - 0.5) * noiseFactor;
-                const noiseY = (Math.random() - 0.5) * noiseFactor;
-                const noiseZ = (Math.random() - 0.5) * noiseFactor;
+                const noiseFactor = 0.5;
+                const noiseX = this.noiseFactorX * noiseFactor;
+                const noiseY = this.noiseFactorY * noiseFactor;
+                const noiseZ = this.noiseFactorZ * noiseFactor;
 
-                this.vertices.push(x + noiseX, y + noiseY, z + noiseZ);
+                this.vertices.push(z + noiseZ, y + noiseY, x + noiseX);
                 this.normals.push(x + noiseX, y + noiseY, z + noiseZ);
 
                 this.texCoords.push(longitude / this.slices, latitude / this.stacks);
@@ -42,8 +44,8 @@ export class MyRock extends CGFobject {
                 const a = latitude * (this.slices + 1) + longitude;
                 const b = a + this.slices + 1;
 
-                this.indices.push(b, a + 1, a);
-                this.indices.push(b + 1, a + 1, b);
+                this.indices.push(a, b, a + 1);
+                this.indices.push(b, b + 1, a + 1);
             }
         }
 
