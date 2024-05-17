@@ -91,24 +91,13 @@ export class MyBee extends CGFobject {
     this.wingMaterial.setShininess(10.0);
   }
 
-  update(t) {
-    //Update elapsedTime for animations
-    this.elapsedTime += t / 1000.0;
-
-    var dirVector = [
-      Math.sin(this.orientation),
-      this.y,
-      Math.cos(this.orientation),
-    ];
-    this.speedFactor = t;
-
-    this.x += this.speed * dirVector[0] * t;
-    this.z += this.speed * dirVector[2] * t;
+  oscillate(delta_t) {
+    this.elapsedTime += delta_t / 1000.0;
   }
 
   display() {
 
-    this.update(50);
+    this.oscillate(50);
     this.scene.translate(0, Math.sin(this.elapsedTime) * 0.5, 0);
 
     // Head
