@@ -20,14 +20,16 @@ export class MyFlower extends CGFobject {
     this.length;
 
     // stem
-    this.yPosStem = -15;        // initial yPos for the first stem
-    this.stem = new MyStem(this.scene, 100, 20);
+    this.yPosStem = -15; // initial yPos for the first stem
+    this.maxValue = 0.5;
+    this.minValue = 0.2;
+    this.stemRadius = this.minValue + Math.random() * (this.maxValue - this.minValue);
     this.stemTexture = new CGFtexture(this.scene, "images/stemTexture.png");
     this.stemAppearance = new CGFappearance(this.scene);
     this.stemAppearance.setTexture(this.stemTexture);
     this.stemAppearance.setTextureWrap('REPEAT', 'REPEAT');
-    this.stemRadius = this.stem.getRadius();
     // this.auxStemRadius = 0.05 + Math.random() * (0.2 - 0.05);
+
 
     // handle stem position
     for (let i = 0; i < this.nrStems; i++) {
@@ -45,8 +47,22 @@ export class MyFlower extends CGFobject {
       this.yPosStem += this.length;
     }
 
+    
+
+    // stems that come out of the main stem
+    this.stems = [];
+    let lastRingVertices = null;
+    
+    for (let i = 0; i < this.nrStems; i++) {
+      let stem = new MyStem(this.scene, 100, 20, lastRingVertices);
+      this.stems.push(stem);
+      lastRingVertices = stem.getLastRingVertices();
+    }
+    
+
     // TODO: need to add colors later (stemColor, leafColor, receptacleColor, petalColor)
     // TODO: or try to add multiple textures to textures' array
+    
     // stems that come out of the main stem
     // this.auxStem = new MyStem(this.scene, 100, 20, this.stemTexture);
     // let minAuxLength = 0.5; // Maximum length for a substem
@@ -114,7 +130,8 @@ export class MyFlower extends CGFobject {
     let leafValue2 = 0;
 
     // stem display
-    for (const pos of this.stemPositions) {
+    for (let j = 0; j < this.nrStems; j++) {
+      const pos = this.stemPositions[j];
       let k = i % 2 == 1 ? 1 : -1;
       this.scene.pushMatrix();
       this.stemAppearance.apply();
@@ -122,7 +139,7 @@ export class MyFlower extends CGFobject {
       // this.scene.rotate(k * Math.PI/36,1,0,0);
       this.scene.rotate(Math.PI / 2, 1, 0, 0);
       this.scene.scale(this.stemRadius, this.stemRadius, 5);
-      this.stem.display();
+      this.stems[j].display();
       this.scene.popMatrix();
 
       if (this.leafRandomValue >= 0.5) {
@@ -179,13 +196,13 @@ export class MyFlower extends CGFobject {
     // receptacle display
     this.scene.pushMatrix();
     this.receptacleAppearance.apply();
-    this.receptacleYPos = this.yPosStem - this.length + this.receptacleRadius;
+    this.receptacleYPos = this.yPosStem - this.length + this.receptacleRadius - 0.2;
     this.scene.translate(0, this.receptacleYPos, 0);
     this.receptacle.display();
     this.scene.popMatrix();
     
     // petals display
-    this.petalYPos = this.receptacleYPos + this.receptacleRadius / 3;
+    this.petalYPos = this.receptacleYPos + this.receptacleRadius / 3 - 0.2;
     for (let i = 0; i < this.numPetals; i++) {
       let angle = i * this.angleIncrement;
       
