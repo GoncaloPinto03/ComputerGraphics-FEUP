@@ -20,7 +20,7 @@ export class MyFlower extends CGFobject {
     this.length;
 
     // stem
-    this.yPosStem = -50; // initial yPos for the first stem
+    this.yPosStem = -95; // initial yPos for the first stem
     this.stemTexture = new CGFtexture(this.scene, "images/stemTexture.png");
     this.stemAppearance = new CGFappearance(this.scene);
     this.stemAppearance.setTexture(this.stemTexture);
