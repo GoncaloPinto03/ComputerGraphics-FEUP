@@ -84,26 +84,47 @@ export class MyScene extends CGFscene {
     this.panorama = new MyPanorama(this, this.panoramaAppearance);
   }
   initLights() {
+
     this.lights[0].setPosition(15, 0, 5, 1);
     this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
+    this.lights[0].setAmbient(0.2,0.2,0.2,1.0);
     this.lights[0].enable();
     this.lights[0].update();
+
+    this.lights[1].setPosition(10, -60, 40, 1);
+    this.lights[1].setDiffuse(1.0, 1.0, 1.0, 1.0);
+    this.lights[1].setAmbient(0.2,0.2,0.2,1.0);
+    this.lights[1].enable();
+    this.lights[1].update();
+
+    this.lights[2].setPosition(35, 35, 30, 1);
+    this.lights[2].setDiffuse(1.0, 1.0, 1.0, 1.0);
+    this.lights[2].setAmbient(0.2,0.2,0.2,1.0);
+    this.lights[2].enable();
+    this.lights[2].update();
+
+    this.lights[3].setPosition(15, 35, 80, 1);
+    this.lights[3].setDiffuse(1.0, 1.0, 1.0, 1.0);
+    this.lights[3].setAmbient(0.2,0.2,0.2,1.0);
+    this.lights[3].enable();
+    this.lights[3].update();
   }
-  initCameras() {
+initCameras() {
     this.camera = new CGFcamera(
-      1.0,
-      0.1,
-      1000,
-      vec3.fromValues(50, 10, 15),
-      vec3.fromValues(0, 0, 0)
+        1.5,
+        0.1,
+        1000,
+        vec3.fromValues(0, -55, 45), //where the camera is
+        vec3.fromValues(20,-70.3,50) //the target
     );
-  }
-  setDefaultAppearance() {
+}
+setDefaultAppearance() {
     this.setAmbient(0.2, 0.4, 0.8, 1.0);
     this.setDiffuse(0.2, 0.4, 0.8, 1.0);
     this.setSpecular(0.2, 0.4, 0.8, 1.0);
     this.setShininess(10.0);
-  }
+}
+
   checkKeys() {
     var text= "Keys pressed: ";
     var keysPressed= false;
@@ -181,14 +202,15 @@ export class MyScene extends CGFscene {
     // this.movingBee.update((this.speedFactor));
     // this.popMatrix();
 
-    // this.pushMatrix();
-    // this.translate(10, 0, 10);
-    // this.pollenMaterial.apply();
-    // this.pollen.display();
-    // this.popMatrix();
+    this.pushMatrix();
+    this.translate(20, 0, 10);
+    this.pollenMaterial.apply();
+    this.pollen.display();
+    this.popMatrix();
 
     this.pushMatrix();
-    this.translate(0, -10, 0);
+    this.rotate(-Math.PI/2, 0, 1, 0);
+    this.translate(0, -90, -50);
     this.hive.display();
     this.popMatrix();
 
