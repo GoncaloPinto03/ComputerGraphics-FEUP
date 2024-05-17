@@ -19,6 +19,8 @@ export class MyScene extends CGFscene {
         // Default garden dimensions
         this.gardenRows = 5;
         this.gardenCols = 5;
+
+        this.pollensPos = [];
     }
 
     init(application) {
@@ -41,9 +43,10 @@ export class MyScene extends CGFscene {
         this.axis = new CGFaxis(this);
         this.plane = new MyPlane(this, 30);
         this.rockSet = new MyRockSet(this);
-        this.bee = new MyBee(this, 0, 0, 0);
-        this.movingBee = new MyMovingBee(this, this.bee, 0, 0, 0);
         this.garden = new MyGarden(this, this.gardenRows, this.gardenCols);
+        this.pollenPos = this.garden.getPollenPositions();
+        this.bee = new MyBee(this, 0, 0, 0);
+        this.movingBee = new MyMovingBee(this, this.bee, 0, 0, 0,this. pollenPos);
         this.pollen = new MyPollen(this, 50, 50, 5, 1.5, 1);
         this.hive = new MyHive(this);
 
@@ -172,6 +175,19 @@ export class MyScene extends CGFscene {
         text += " R ";
         keysPressed = true;
         this.movingBee.reset();
+      }
+
+      if (this.gui.isKeyPressed("KeyF")) {
+        text += " F ";
+        keysPressed = true;
+
+        const pollenIndex = this.movingBee.searchPollen();
+        this.movingBee.goToPollen(pollenIndex);
+      }
+
+      if (this.gui.isKeyPressed("KeyP")) {
+        text += " P ";
+        keysPressed = true;
       }
   
       if (keysPressed) console.log(text);

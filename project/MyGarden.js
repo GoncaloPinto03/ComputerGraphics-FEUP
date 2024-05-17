@@ -7,6 +7,7 @@ export class MyGarden extends CGFobject {
         this.rows = rows;
         this.cols = cols;
         this.flowers = [];
+        this.pollensPos = [];
         this.initFlowers();
 	}
 
@@ -16,9 +17,16 @@ export class MyGarden extends CGFobject {
         for (let i = 0; i < this.rows; i++) {
             this.flowers[i] = [];
             for (let j = 0; j < this.cols; j++) {
-                this.flowers[i][j] = new MyFlower(this.scene);
+                const flower = new MyFlower(this.scene);
+                this.flowers[i][j] = flower;
+                const pollenPosition = flower.getPollenPosition();
+                this.pollensPos.push(pollenPosition);
             }
         }
+    }
+
+    getPollenPositions() {
+        return this.pollensPos;
     }
 
     updateSize(rows, cols) {

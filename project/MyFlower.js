@@ -104,6 +104,9 @@ export class MyFlower extends CGFobject {
     this.pollenMaterial.setTextureWrap("REPEAT", "REPEAT");
 
     this.randomPollenPosition = Math.random();
+
+    this.receptacleYPos = this.yPosStem - this.length + this.receptacleRadius;
+
   }
 
   getNumPetals() {
@@ -120,6 +123,10 @@ export class MyFlower extends CGFobject {
   }
   getRandomTexture(textures) {
     return textures[Math.floor(Math.random() * textures.length)];
+  }
+
+  getPollenPosition() {
+    return [this.receptacleRadius/2, this.receptacleYPos + this.receptacleRadius/2, 0];
   }
 
   display() {
@@ -193,7 +200,6 @@ export class MyFlower extends CGFobject {
     // receptacle display
     this.scene.pushMatrix();
     this.receptacleAppearance.apply();
-    this.receptacleYPos = this.yPosStem - this.length + this.receptacleRadius;
     this.scene.translate(0, this.receptacleYPos, 0);
     this.receptacle.display();
     this.scene.popMatrix();
