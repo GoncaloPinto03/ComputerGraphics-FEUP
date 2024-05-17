@@ -2,6 +2,7 @@ import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFshader, CGFtexture } fr
 import { MyPlane } from "./MyPlane.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyGarden } from "./MyGarden.js";
+import { MyGrassPatch } from "./MyGrassPatch.js";
 
 /**
  * MyScene
@@ -35,6 +36,7 @@ export class MyScene extends CGFscene {
 
         // initialize garden
         this.garden = new MyGarden(this, this.gardenRows, this.gardenCols);
+        this.grassPatch = new MyGrassPatch(this, 50, 50, 15000); // 50x50 units with 1000 blades
 
         //Objects connected to MyInterface
         this.scaleFactor = 1;
@@ -134,6 +136,11 @@ export class MyScene extends CGFscene {
         
         this.pushMatrix();
         this.garden.display();
+        this.popMatrix();
+
+        this.pushMatrix();
+        this.translate(-30, -50, -30); // Position the grass patch as needed
+        this.grassPatch.display();
         this.popMatrix();
   
         // ---- END Primitive drawing section

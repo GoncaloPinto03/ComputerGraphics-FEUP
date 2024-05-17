@@ -20,10 +20,7 @@ export class MyFlower extends CGFobject {
     this.length;
 
     // stem
-    this.yPosStem = -15; // initial yPos for the first stem
-    this.maxValue = 0.5;
-    this.minValue = 0.2;
-    this.stemRadius = this.minValue + Math.random() * (this.maxValue - this.minValue);
+    this.yPosStem = -50; // initial yPos for the first stem
     this.stemTexture = new CGFtexture(this.scene, "images/stemTexture.png");
     this.stemAppearance = new CGFappearance(this.scene);
     this.stemAppearance.setTexture(this.stemTexture);
@@ -47,15 +44,19 @@ export class MyFlower extends CGFobject {
       this.yPosStem += this.length;
     }
 
-    
-
     // stems that come out of the main stem
     this.stems = [];
     let lastRingVertices = null;
     
     for (let i = 0; i < this.nrStems; i++) {
       let stem = new MyStem(this.scene, 100, 20, lastRingVertices);
-      this.stems.push(stem);
+      let stemRadius = stem.getRadius();
+
+      this.stems.push({ 
+        stem: stem, 
+        stemRadius: stemRadius,
+      });
+      
       lastRingVertices = stem.getLastRingVertices();
     }
     
@@ -138,8 +139,8 @@ export class MyFlower extends CGFobject {
       this.scene.translate(pos.x, pos.y, pos.z);
       // this.scene.rotate(k * Math.PI/36,1,0,0);
       this.scene.rotate(Math.PI / 2, 1, 0, 0);
-      this.scene.scale(this.stemRadius, this.stemRadius, 5);
-      this.stems[j].display();
+      this.scene.scale(this.stems[j].stemRadius, this.stems[j].stemRadius, 5);
+      this.stems[j].stem.display();
       this.scene.popMatrix();
 
       if (this.leafRandomValue >= 0.5) {
@@ -160,7 +161,6 @@ export class MyFlower extends CGFobject {
         // Render leaf at the end of the substem
         this.scene.pushMatrix();
         this.leafAppearance.apply();
-        // this.leafAppearanceBottom.apply();
         this.scene.translate(pos.x, pos.y - leafValue1, pos.z + leafPositionZ);
         this.scene.rotate(this.leafStem1Angle, 1, 0, 0); // add soft rotation to the stem leaves
         this.scene.rotate(Math.PI / 2, 1, 0, 0);
@@ -171,7 +171,6 @@ export class MyFlower extends CGFobject {
         // Render leaf at the end of the substem
         this.scene.pushMatrix();
         this.leafAppearance.apply();
-        // this.leafAppearanceBottom.apply();
         this.scene.translate(pos.x, pos.y - leafValue2, pos.z - leafPositionZ);
         this.scene.rotate(-this.leafStem2Angle, 1, 0, 0); // add soft rotation to the stem leaves
         this.scene.rotate(Math.PI, 0, 1, 0);
@@ -215,7 +214,6 @@ export class MyFlower extends CGFobject {
         // Render leaf at the end of the substem
         this.scene.pushMatrix();
         this.petalAppearance.apply();
-        // this.petalAppearanceBottom.apply();
         this.scene.translate(0, this.petalYPos, 0);
         this.scene.rotate(angle, 1, 0, 0);
         this.scene.translate(0, 0, 2.8);
@@ -229,7 +227,6 @@ export class MyFlower extends CGFobject {
         // Render leaf at the end of the substem
         this.scene.pushMatrix();
         this.petalAppearance.apply();
-        // this.petalAppearanceBottom.apply();
         this.scene.translate(0, this.petalYPos, 0);
         this.scene.rotate(angle, 1, 0, 0);
         this.scene.translate(0, 0, 2.8);
