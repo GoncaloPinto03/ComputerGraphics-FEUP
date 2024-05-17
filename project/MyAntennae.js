@@ -6,8 +6,8 @@ export class MyAntennae extends CGFobject {
         super(scene);
 
         // Objects
-        this.stick = new MySphere(this.scene, 16, 8, 0.5, true);
-        this.top = new MySphere(this.scene, 16, 8, 1, true);
+        this.stick = new MySphere(this.scene, 16, 8, 0.5, false);
+        this.top = new MySphere(this.scene, 16, 8, 1, false);
 
         // Materials
         this.initMaterials();

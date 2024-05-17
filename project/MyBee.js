@@ -45,7 +45,7 @@ export class MyBee extends CGFobject {
     this.headMaterial.setDiffuse(0.95, 0.95, 0.95, 0.0);
     this.headMaterial.setSpecular(0.5, 0.5, 0.5, 0.0);
     this.headMaterial.setTexture(
-      new CGFtexture(this.scene, "./images/bee2.jpeg")
+      new CGFtexture(this.scene, "./images/bee_head.png")
     );
     this.headMaterial.setTextureWrap("REPEAT", "REPEAT");
 
@@ -62,19 +62,9 @@ export class MyBee extends CGFobject {
     this.toraxMaterial.setDiffuse(0.95, 0.95, 0.95, 0.0);
     this.toraxMaterial.setSpecular(0.5, 0.5, 0.5, 0.0);
     this.toraxMaterial.setTexture(
-      new CGFtexture(this.scene, "./images/bee2.jpeg")
+      new CGFtexture(this.scene, "./images/bee.jpeg")
     );
     this.toraxMaterial.setTextureWrap("REPEAT", "REPEAT");
-
-    // Abdomen
-    this.abdomenMaterial = new CGFappearance(this.scene);
-    this.abdomenMaterial.setAmbient(0.8, 0.8, 0.8, 0.0);
-    this.abdomenMaterial.setDiffuse(0.95, 0.95, 0.95, 0.0);
-    this.abdomenMaterial.setSpecular(0.5, 0.5, 0.5, 0.0);
-    this.abdomenMaterial.setTexture(
-      new CGFtexture(this.scene, "./images/bee.png")
-    );
-    this.abdomenMaterial.setTextureWrap("REPEAT", "REPEAT");
 
     this.scene.gl.blendFunc(
       this.scene.gl.SRC_ALPHA,
@@ -91,24 +81,13 @@ export class MyBee extends CGFobject {
     this.wingMaterial.setShininess(10.0);
   }
 
-  update(t) {
-    //Update elapsedTime for animations
-    this.elapsedTime += t / 1000.0;
-
-    var dirVector = [
-      Math.sin(this.orientation),
-      this.y,
-      Math.cos(this.orientation),
-    ];
-    this.speedFactor = t;
-
-    this.x += this.speed * dirVector[0] * t;
-    this.z += this.speed * dirVector[2] * t;
+  oscillate(delta_t) {
+    this.elapsedTime += delta_t / 1000.0;
   }
 
   display() {
 
-    this.update(50);
+    this.oscillate(50);
     this.scene.translate(0, Math.sin(this.elapsedTime) * 0.5, 0);
 
     // Head
