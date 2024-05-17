@@ -2,6 +2,8 @@ import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFshader, CGFtexture } fr
 import { MyPlane } from "./MyPlane.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyGarden } from "./MyGarden.js";
+import { MyRock } from "./MyRock.js";
+import { MyRockSet } from "./MyRockSet.js";
 
 /**
  * MyScene
@@ -32,7 +34,8 @@ export class MyScene extends CGFscene {
         //Initialize scene objects
         this.axis = new CGFaxis(this);
         this.plane = new MyPlane(this, 30);
-
+        this.rockSet = new MyRockSet(this);
+        
         // initialize garden
         this.garden = new MyGarden(this, this.gardenRows, this.gardenCols);
 
@@ -54,6 +57,18 @@ export class MyScene extends CGFscene {
         this.panoramaAppearance.setEmission(1, 1, 1, 1);
         this.panoramaAppearance.setTextureWrap('REPEAT', 'REPEAT');
         this.panorama = new MyPanorama(this, this.panoramaAppearance);
+
+        // earth texture
+        this.earthTexture = new CGFtexture(this, "images/earth.jpg");
+        this.earthAppearance = new CGFappearance(this);
+        this.earthAppearance.setTexture(this.earthTexture);
+        this.earthAppearance.setTextureWrap('REPEAT', 'REPEAT');
+
+        // rock texture
+        this.rockTexture = new CGFtexture(this, "images/rock.jpg");
+        this.rockAppearance = new CGFappearance(this);
+        this.rockAppearance.setTexture(this.rockTexture);
+        this.rockAppearance.setTextureWrap('REPEAT', 'REPEAT');
     }
 
     initLights() {
@@ -97,6 +112,8 @@ export class MyScene extends CGFscene {
         this.setSpecular(0.2, 0.4, 0.8, 1.0);
         this.setShininess(10.0);
     }
+
+
 
     setGardenDimensions() {
         this.garden.updateSize(this.gardenRows, this.gardenCols);
@@ -155,6 +172,13 @@ export class MyScene extends CGFscene {
         this.pushMatrix();
         this.translate(100, -81, 100);
         this.garden.display();
+        this.popMatrix();
+
+        this.pushMatrix();
+        this.translate(30, -99, -30);
+        this.scale(2.5, 2, 2);
+        this.rockAppearance.apply();
+        this.rockSet.display();
         this.popMatrix();
   
         // ---- END Primitive drawing section
