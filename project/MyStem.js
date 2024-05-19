@@ -12,8 +12,13 @@ export class MyStem extends CGFobject {
         this.stacks = stacks; // Number of stacks
         this.maxValue = 0.5;
         this.minValue = 0.2;
+        this.radius = this.minValue + Math.random() * (this.maxValue - this.minValue);
         this.startVertices = startVertices;
         this.initBuffers(); // Initialize buffers
+    }
+    
+    getRadius() {
+        return this.radius;
     }
 
     initBuffers() {

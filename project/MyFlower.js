@@ -3,7 +3,7 @@ import { MyStem } from "./MyStem.js";
 import { MyLeaf } from "./MyLeaf.js";
 import { MyReceptacle } from "./MyReceptacle.js";
 import { MyPetal } from "./MyPetal.js";
-import { MyPollen } from "./MyPollen.js";
+
 
 /**
  * MyFlower
@@ -21,9 +21,6 @@ export class MyFlower extends CGFobject {
 
     // stem
     this.yPosStem = -15; // initial yPos for the first stem
-    this.maxValue = 0.5;
-    this.minValue = 0.2;
-    this.stemRadius = this.minValue + Math.random() * (this.maxValue - this.minValue);
     this.stemTexture = new CGFtexture(this.scene, "images/stemTexture.png");
     this.stemAppearance = new CGFappearance(this.scene);
     this.stemAppearance.setTexture(this.stemTexture);
@@ -50,10 +47,15 @@ export class MyFlower extends CGFobject {
     // stems that come out of the main stem
     this.stems = [];
     let lastRingVertices = null;
-    
+
+    this.stemRadius;  
+
     for (let i = 0; i < this.nrStems; i++) {
       let stem = new MyStem(this.scene, 100, 20, lastRingVertices);
+      this.stemRadius = stem.getRadius();
+
       this.stems.push(stem);
+      
       lastRingVertices = stem.getLastRingVertices();
     }
     
@@ -63,7 +65,7 @@ export class MyFlower extends CGFobject {
     // let maxAuxLength = 2.0; // Maximum length for a substem
     // this.auxLength = minAuxLength + Math.random() * (maxAuxLength - minAuxLength);
 
-    // textures
+    // stem leaves
     this.textures = [
       new CGFtexture(this.scene, "images/blue.png"),
       new CGFtexture(this.scene, "images/lightBlue.png"),
@@ -86,12 +88,13 @@ export class MyFlower extends CGFobject {
     // receptacle 
     this.receptacleYPos;
     this.receptacle = new MyReceptacle(this.scene, 1000, 10);
-    this.receptacleTexture = new CGFtexture(this.scene, "images/receptacleTexture.png");
+    this.receptacleTexture = new CGFtexture(this.scene, "images/receptacleColor.png");
     this.receptacleAppearance = new CGFappearance(this.scene);
     this.receptacleAppearance.setTexture(this.receptacleTexture);
     this.receptacleAppearance.setTextureWrap('REPEAT', 'REPEAT');
     this.receptacleRadius = this.receptacle.getRadius();
 
+    // petals
     this.petalYPos;
     this.numPetals = Math.floor(6 + Math.random() * (10 - 6));
     this.angleIncrement = (2 * Math.PI) / this.numPetals;
@@ -101,23 +104,6 @@ export class MyFlower extends CGFobject {
     this.petalAppearance = new CGFappearance(this.scene);
     this.petalAppearance.setTexture(this.getRandomTexture(this.textures));
     this.petalAppearance.setTextureWrap('REPEAT', 'REPEAT');
-
-    // pollen
-    this.pollen = new MyPollen(this.scene, 50, 50, 1, 1.5, 1);
-    // pollen texture
-    this.pollenMaterial = new CGFappearance(this.scene);
-    this.pollenMaterial.setAmbient(0.8, 0.8, 0.8, 0.0);
-    this.pollenMaterial.setDiffuse(0.95, 0.95, 0.95, 0.0);
-    this.pollenMaterial.setSpecular(0.5, 0.5, 0.5, 0.0);
-    this.pollenMaterial.setTexture(
-      new CGFtexture(this.scene, "./images/pollen.jpg")
-    );
-    this.pollenMaterial.setTextureWrap("REPEAT", "REPEAT");
-
-    this.randomPollenPosition = Math.random();
-
-    this.receptacleYPos = this.yPosStem - this.length + this.receptacleRadius;
-
   }
 
   getNumPetals() {
@@ -125,6 +111,9 @@ export class MyFlower extends CGFobject {
   }
   getReceptacleRadius() {
     return this.receptacleRadius;
+  }
+  getStemRadius() {
+    return this.stemRadius;
   }
   getNumStems() {
     return this.numStems;
@@ -145,7 +134,8 @@ export class MyFlower extends CGFobject {
     // stem display
     for (let j = 0; j < this.nrStems; j++) {
       const pos = this.stemPositions[j];
-      let k = i % 2 == 1 ? 1 : -1;
+      // let k = i % 2 == 1 ? 1 : -1;
+      
       this.scene.pushMatrix();
       this.stemAppearance.apply();
       this.scene.translate(pos.x, pos.y, pos.z);
@@ -210,15 +200,6 @@ export class MyFlower extends CGFobject {
     this.receptacleYPos = this.yPosStem - this.length + this.receptacleRadius - 0.2;
     this.scene.translate(0, this.receptacleYPos, 0);
     this.receptacle.display();
-    this.scene.popMatrix();
-
-    // pollen display
-    this.scene.pushMatrix();
-    this.scene.rotate(this.randomPollenPosition*Math.PI, 0, 1, 0);
-    this.scene.translate(this.receptacleRadius/2, this.receptacleYPos + this.receptacleRadius/2, 0);
-    this.scene.scale(0.5, 0.5, 0.5);
-    this.pollenMaterial.apply();
-    this.pollen.display();
     this.scene.popMatrix();
     
     // petals display

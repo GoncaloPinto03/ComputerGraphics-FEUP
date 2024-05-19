@@ -6,7 +6,14 @@ import { MyRockSet } from "./MyRockSet.js";
 import { MyBee } from "./MyBee.js";
 import { MyMovingBee } from "./MyMovingBee.js";
 import { MyHive } from "./MyHive.js";
+import { MyGrassPatch } from "./MyGrassPatch.js";
 
+function getStringFromUrl(url) {
+    var xmlHttpReq = new XMLHttpRequest();
+    xmlHttpReq.open("GET", url, false); // synchronous request
+    xmlHttpReq.send();
+    return xmlHttpReq.responseText;
+}
 /**
  * MyScene
  * @constructor
@@ -19,6 +26,7 @@ export class MyScene extends CGFscene {
         this.gardenCols = 5;
 
         this.pollensPos = [];
+        this.speedFactor = 0.001 + Math.random() * (0.0035 - 0.001); // Adjust this value as needed
     }
 
     init(application) {
@@ -46,6 +54,7 @@ export class MyScene extends CGFscene {
         this.bee = new MyBee(this, 0, 0, 0);
         this.movingBee = new MyMovingBee(this, this.bee, 0, 0, 0,this. pollenPos);
         this.hive = new MyHive(this);
+        this.grassPatch = new MyGrassPatch(this, 100, 100, 25000, this.speedFactor); // change this to 50x50 units
 
         //Objects connected to MyInterface
         this.displayAxis = true;
@@ -80,6 +89,8 @@ export class MyScene extends CGFscene {
         this.rockAppearance = new CGFappearance(this);
         this.rockAppearance.setTexture(this.rockTexture);
         this.rockAppearance.setTextureWrap('REPEAT', 'REPEAT');
+
+        this.startTime = Date.now();
     }
 
     initLights() {
@@ -107,7 +118,7 @@ export class MyScene extends CGFscene {
         this.lights[3].setAmbient(0.2,0.2,0.2,1.0);
         this.lights[3].enable();
         this.lights[3].update();
-      }
+    }
     initCameras() {
         this.camera = new CGFcamera(
             1.5,
@@ -183,7 +194,13 @@ export class MyScene extends CGFscene {
       this.movingBee.update((this.beeSpeedFactor));
       this.movingBee.beeSpeedFactor = this.beeSpeedFactor;
       this.movingBee.beeScaleFactor = this.beeScaleFactor;
-    }  
+    }
+    updateGrass(currentTime){
+      if (!this.startTime)
+        this.startTime = currentTime;
+        let elapsedTime = currentTime - this.startTime;
+        this.grassPatch.update(elapsedTime);
+    }
 
     display() {
         // ---- BEGIN Background, camera and axis setup
@@ -221,7 +238,8 @@ export class MyScene extends CGFscene {
         if (this.displayAxis) this.axis.display();
 
         // ---- BEGIN Primitive drawing section
-
+        this.updateGrass(Date.now());
+        
         this.pushMatrix();
         this.terrainAppearance.apply();
         this.translate(0, -100, 0);
@@ -236,31 +254,37 @@ export class MyScene extends CGFscene {
         this.popMatrix();
         
         this.pushMatrix();
-        this.translate(100, -81, 100);
+        this.translate(100, -81, 30);
         this.garden.display();
         this.popMatrix();
 
         this.pushMatrix();
-        this.translate(36, -99, -25);
+        this.translate(50, -99, 50);
         this.scale(3, 1.5, 3);
         this.rockAppearance.apply();
         this.rockSet.display();
         this.popMatrix();
 
         this.pushMatrix();
-        this.translate(60, -70, 70);
+        this.translate(40, -70, 0);
         this.scale(0.3, 0.3, 0.3);
         this.movingBee.display();
         this.movingBee.update((this.beeSpeedFactor));
         this.popMatrix();
 
         this.pushMatrix();
-        this.rotate(-Math.PI/2, 0, 1, 0);
-        this.translate(-10, -81, -65);
+        this.translate(50, -81, 80);
+        this.rotate(2*Math.PI/3, 0, 1, 0);
         this.scale(1.5, 1.5, 1.5);
         this.hive.display();
         this.popMatrix();
 
+        this.pushMatrix();
+        this.rotate(-Math.PI/2, 0, 1, 0);
+        this.translate(0, -95, -60); // Position the grass patch as needed
+        this.grassPatch.display();
+        this.popMatrix();
+  
         // ---- END Primitive drawing section
     }
 }
