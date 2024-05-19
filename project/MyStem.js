@@ -10,6 +10,8 @@ export class MyStem extends CGFobject {
         super(scene);
         this.slices = slices; // Number of slices
         this.stacks = stacks; // Number of stacks
+        this.maxValue = 0.5;
+        this.minValue = 0.2;
         this.startVertices = startVertices;
         this.initBuffers(); // Initialize buffers
     }
