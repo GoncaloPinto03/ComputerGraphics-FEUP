@@ -1,4 +1,4 @@
-import { CGFobject } from "../lib/CGF.js";
+import { CGFobject, CGFshader } from "../lib/CGF.js";
 
 export class MyGrassPortion extends CGFobject {
     constructor(scene, height = 2) {    

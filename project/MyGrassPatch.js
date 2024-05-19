@@ -10,10 +10,15 @@ export class MyGrassPatch extends CGFobject {
         this.minHeight = minHeight;
         this.maxHeight = maxHeight;
         this.grassPortions = [];
-        this.initGrass();
+
+        const vertShader = "shaders/grass.vert";
+        const fragShader = "shaders/grass.frag";
+        this.grassShader = new CGFshader(this.gl, vertShader, fragShader);
+        this.grassShader.setUniformsValues({ timeFactor: 0 });
+        this.initGrassPatch();
     }
 
-    initGrass() {
+    initGrassPatch() {
         this.grassTexture = new CGFtexture(this.scene, "images/grassColor.png");
         this.grassAppearance = new CGFappearance(this.scene);
         this.grassAppearance.setTexture(this.grassTexture);
@@ -31,6 +36,10 @@ export class MyGrassPatch extends CGFobject {
     }
 
     display() {
+        this.scene.pushMatrix();
+        this.grassAppearance.apply();
+        this.scene.setActiveShader(this.grassShader);
+
         for (let portion of this.grassPortions) {
             this.scene.pushMatrix();
             this.grassAppearance.apply();
@@ -38,10 +47,17 @@ export class MyGrassPatch extends CGFobject {
             this.scene.rotate(portion.angle, 0, 1, 0);
 
             // Apply wind effect
-            let sway = Math.sin(Date.now() * 0.005 + portion.x + portion.z) * 0.1;
-            this.scene.rotate(sway, 0, 0, 1);
+            // let sway = Math.sin(Date.now() * 0.005 + portion.x + portion.z) * 0.1;
+            // this.scene.rotate(sway, 0, 0, 1);
             portion.display();
             this.scene.popMatrix();
         }
+        this.scene.popMatrix();
+        this.scene.setActiveShader(this.scene.defaultShader);
     }
+
+    update(time) {
+        const speedFactor = 0.001; // Adjust this value as needed
+        this.grassShader.setUniformsValues({ timeFactor: time * speedFactor });
+      }
 }
