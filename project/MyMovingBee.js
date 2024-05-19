@@ -1,7 +1,7 @@
 import { CGFobject } from "../lib/CGF.js";
 
 export class MyMovingBee extends CGFobject {
-  constructor(scene, bee, x, y, z) {
+  constructor(scene, bee, x, y, z, pollenPos) {
     super(scene);
 
     this.bee = bee;
@@ -18,6 +18,12 @@ export class MyMovingBee extends CGFobject {
 
     this.beeSpeedFactor = 1;
     this.beeScaleFactor = 1;
+
+    this.height = 0;
+    this.goingDown = false;
+    this.clickedPTime = 0;  
+
+    this.pollenPos = pollenPos;
 
   }
 
@@ -37,16 +43,47 @@ export class MyMovingBee extends CGFobject {
     this.turnRight = false;
   }
 
+  searchPollen() {
+    var minDistance = 1000;
+    var minIndex = -1;
+    for (var i = 0; i < this.pollenPos.length; i++) {
+      var distance = Math.sqrt(
+        Math.pow(this.pollenPos[i][0] - this.x, 2) +
+        Math.pow(this.pollenPos[i][1] - this.y, 2) +
+        Math.pow(this.pollenPos[i][2] - this.z, 2)
+      );
+      if (distance < minDistance) {
+        minDistance = distance;
+        minIndex = i;
+      }
+    }
+    console.log("minIndex: " + minIndex);
+    return minIndex;
+  }
+
+  goToPollen(pollenIndex) {
+    var x = this.pollenPos[pollenIndex][0];
+    var y = this.pollenPos[pollenIndex][1];
+    var z = this.pollenPos[pollenIndex][2];
+    var dx = x - this.x;
+    var dy = y - this.y;
+    var dz = z - this.z;
+    var angle = Math.atan2(dz, dx);
+    this.orientation = angle;
+    this.speed = 1;
+  }
+
   update(delta_t) {
     this.elapsedTime += delta_t / 1000.0;
 
     var position = [
       Math.sin(this.orientation),
-      this.y,
+      this.height,
       Math.cos(this.orientation),
     ];
     
     this.x += position[0] * this.speed * delta_t;
+    this.y += this.height;
     this.z += position[2] * this.speed * delta_t;
     this.speedFactor = delta_t;
   }
@@ -60,6 +97,7 @@ export class MyMovingBee extends CGFobject {
     this.turnLeft = false;
     this.turnRight = false;
     this.beeSpeedFactor = 1;
+    this.goingDown = false;
   }
 
   display() {

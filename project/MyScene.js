@@ -2,10 +2,10 @@ import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFshader, CGFtexture } fr
 import { MyPlane } from "./MyPlane.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyGarden } from "./MyGarden.js";
-import { MyRock } from "./MyRock.js";
 import { MyRockSet } from "./MyRockSet.js";
 import { MyBee } from "./MyBee.js";
 import { MyMovingBee } from "./MyMovingBee.js";
+import { MyHive } from "./MyHive.js";
 
 /**
  * MyScene
@@ -17,6 +17,8 @@ export class MyScene extends CGFscene {
         // Default garden dimensions
         this.gardenRows = 5;
         this.gardenCols = 5;
+
+        this.pollensPos = [];
     }
 
     init(application) {
@@ -39,9 +41,11 @@ export class MyScene extends CGFscene {
         this.axis = new CGFaxis(this);
         this.plane = new MyPlane(this, 30);
         this.rockSet = new MyRockSet(this);
-        this.bee = new MyBee(this, 0, 0, 0);
-        this.movingBee = new MyMovingBee(this, this.bee, 0, 0, 0);
         this.garden = new MyGarden(this, this.gardenRows, this.gardenCols);
+        this.pollenPos = this.garden.getPollenPositions();
+        this.bee = new MyBee(this, 0, 0, 0);
+        this.movingBee = new MyMovingBee(this, this.bee, 0, 0, 0,this. pollenPos);
+        this.hive = new MyHive(this);
 
         //Objects connected to MyInterface
         this.displayAxis = true;
@@ -109,8 +113,8 @@ export class MyScene extends CGFscene {
             1.5,
             0.1,
             1000,
-            vec3.fromValues(0, -55, 45), //where the camera is
-            vec3.fromValues(20,-70.3,50) //the target
+            vec3.fromValues(0, -50, 40), //where the camera is
+            vec3.fromValues(40,-60, 30) //the target
         );
     }
     setDefaultAppearance() {
@@ -157,6 +161,19 @@ export class MyScene extends CGFscene {
         text += " R ";
         keysPressed = true;
         this.movingBee.reset();
+      }
+
+      if (this.gui.isKeyPressed("KeyF")) {
+        text += " F ";
+        keysPressed = true;
+
+        const pollenIndex = this.movingBee.searchPollen();
+        this.movingBee.goToPollen(pollenIndex);
+      }
+
+      if (this.gui.isKeyPressed("KeyP")) {
+        text += " P ";
+        keysPressed = true;
       }
   
       if (keysPressed) console.log(text);
@@ -224,8 +241,8 @@ export class MyScene extends CGFscene {
         this.popMatrix();
 
         this.pushMatrix();
-        this.translate(30, -99, -30);
-        this.scale(2.5, 2, 2);
+        this.translate(36, -99, -25);
+        this.scale(3, 1.5, 3);
         this.rockAppearance.apply();
         this.rockSet.display();
         this.popMatrix();
@@ -236,7 +253,14 @@ export class MyScene extends CGFscene {
         this.movingBee.display();
         this.movingBee.update((this.beeSpeedFactor));
         this.popMatrix();
-  
+
+        this.pushMatrix();
+        this.rotate(-Math.PI/2, 0, 1, 0);
+        this.translate(-10, -81, -65);
+        this.scale(1.5, 1.5, 1.5);
+        this.hive.display();
+        this.popMatrix();
+
         // ---- END Primitive drawing section
     }
 }
