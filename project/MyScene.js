@@ -21,6 +21,7 @@ export class MyScene extends CGFscene {
         // Default garden dimensions
         this.gardenRows = 5;
         this.gardenCols = 5;
+        this.speedFactor = 0.001 + Math.random() * (0.0035 - 0.001); // Adjust this value as needed
     }
 
     init(application) {
@@ -43,7 +44,7 @@ export class MyScene extends CGFscene {
 
         // initialize garden
         this.garden = new MyGarden(this, this.gardenRows, this.gardenCols);
-        this.grassPatch = new MyGrassPatch(this, 100, 100, 25000); // change this to 50x50 units
+        this.grassPatch = new MyGrassPatch(this, 100, 100, 25000, this.speedFactor); // change this to 50x50 units
 
         //Objects connected to MyInterface
         this.scaleFactor = 1;
@@ -64,8 +65,7 @@ export class MyScene extends CGFscene {
         this.panoramaAppearance.setTextureWrap('REPEAT', 'REPEAT');
         this.panorama = new MyPanorama(this, this.panoramaAppearance);
 
-        // Set the scene update period (to invoke the update() method every 50ms or as close as possible to that)
-        this.setUpdatePeriod(50);
+        this.startTime = Date.now();
     }
 
     initLights() {
@@ -114,6 +114,13 @@ export class MyScene extends CGFscene {
         this.garden.updateSize(this.gardenRows, this.gardenCols);
     }
 
+    update(currentTime) {
+        if (!this.startTime)
+            this.startTime = currentTime;
+        let elapsedTime = currentTime - this.startTime;
+        this.grassPatch.update(elapsedTime);
+    }
+
     display() {
         // ---- BEGIN Background, camera and axis setup
         // Clear image and depth buffer everytime we update the scene
@@ -150,7 +157,8 @@ export class MyScene extends CGFscene {
         if (this.displayAxis) this.axis.display();
 
         // ---- BEGIN Primitive drawing section
-
+        this.update(Date.now());
+        
         this.pushMatrix();
         this.terrainAppearance.apply();
         this.translate(0, -100, 0);
@@ -172,13 +180,6 @@ export class MyScene extends CGFscene {
         this.translate(-30, -95, -30); // Position the grass patch as needed
         this.grassPatch.display();
         this.popMatrix();
-
-        // Render the grass portion with the custom shader
-        this.setActiveShader(this.grassShader);
-        this.pushMatrix();
-        this.grassPortion.display();
-        this.popMatrix();
-        this.setActiveShader(this.defaultShader);
   
         // ---- END Primitive drawing section
     }

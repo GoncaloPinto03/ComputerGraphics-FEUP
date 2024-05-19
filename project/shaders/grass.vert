@@ -7,11 +7,8 @@ uniform mat4 uPMatrix;
 uniform float timeFactor;
 
 void main() {
-    float frequency = 3.0; 
-    float amplitude = 0.2; 
-    float normalizedHeight = aVertexPosition.y / 2.0;
-    float swayAmount = sin(timeFactor * frequency + aVertexPosition.y * 2.0) * amplitude * normalizedHeight;
-    vec3 offset = vec3(swayAmount, 0, 0);
+    float windEffect = sin(timeFactor * 4.0 + aVertexPosition.y * 2.0) * 0.25 * (aVertexPosition.y / 2.0);
+    vec3 offset = vec3(0, 0, windEffect);
 
     gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition + offset, 1.0);
 }

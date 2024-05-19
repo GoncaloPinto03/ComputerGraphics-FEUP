@@ -222,7 +222,7 @@ export class ShaderScene extends CGFscene {
 		this.applyViewMatrix();
 
 		// Update all lights used
-		this.lights[0].update();
+		this.lights[0].updupdatdeate();
 
 		// Draw axis
 		this.axis.display();

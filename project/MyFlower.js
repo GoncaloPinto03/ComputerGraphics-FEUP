@@ -48,7 +48,6 @@ export class MyFlower extends CGFobject {
     this.stems = [];
     let lastRingVertices = null;
 
-    // this will be the stemRadius value of the last generated flower
     this.stemRadius;  
 
     for (let i = 0; i < this.nrStems; i++) {
@@ -59,10 +58,6 @@ export class MyFlower extends CGFobject {
       
       lastRingVertices = stem.getLastRingVertices();
     }
-    
-
-    // TODO: need to add colors later (stemColor, leafColor, receptacleColor, petalColor)
-    // TODO: or try to add multiple textures to textures' array
     
     // stems that come out of the main stem
     // this.auxStem = new MyStem(this.scene, 100, 20, this.stemTexture);
@@ -99,6 +94,7 @@ export class MyFlower extends CGFobject {
     this.receptacleAppearance.setTextureWrap('REPEAT', 'REPEAT');
     this.receptacleRadius = this.receptacle.getRadius();
 
+    // petals
     this.petalYPos;
     this.numPetals = Math.floor(6 + Math.random() * (10 - 6));
     this.angleIncrement = (2 * Math.PI) / this.numPetals;
