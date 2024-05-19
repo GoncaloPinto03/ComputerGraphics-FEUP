@@ -88,7 +88,7 @@ export class MyFlower extends CGFobject {
     // receptacle 
     this.receptacleYPos;
     this.receptacle = new MyReceptacle(this.scene, 1000, 10);
-    this.receptacleTexture = new CGFtexture(this.scene, "images/receptacleColor.png");
+    this.receptacleTexture = new CGFtexture(this.scene, "images/receptacleTexture.png");
     this.receptacleAppearance = new CGFappearance(this.scene);
     this.receptacleAppearance.setTexture(this.receptacleTexture);
     this.receptacleAppearance.setTextureWrap('REPEAT', 'REPEAT');
